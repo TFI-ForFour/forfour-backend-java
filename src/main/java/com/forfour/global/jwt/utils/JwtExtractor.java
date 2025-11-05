@@ -17,7 +17,7 @@ public class JwtExtractor {
 
     private final Key key;
 
-    public JwtExtractor(@Value("${forfour.jwt.secretKey.key}") String secretKey) {
+    public JwtExtractor(@Value("${forfour.jwt.secretKey}") String secretKey) {
         this.key = Keys.hmacShaKeyFor(secretKey.getBytes());
     }
 
