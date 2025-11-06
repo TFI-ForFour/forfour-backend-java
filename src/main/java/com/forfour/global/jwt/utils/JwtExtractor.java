@@ -1,0 +1,56 @@
+package com.forfour.global.jwt.utils;
+
+import com.forfour.global.auth.AuthConstant;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.security.Keys;
+import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
+import javax.crypto.SecretKey;
+import java.security.Key;
+import java.util.Optional;
+
+@Component
+public class JwtExtractor {
+
+    private final Key key;
+
+    public JwtExtractor(@Value("${forfour.jwt.secretKey}") String secretKey) {
+        this.key = Keys.hmacShaKeyFor(secretKey.getBytes());
+    }
+
+    public Optional<String> extractJwtToken(HttpServletRequest request) {
+        return Optional.ofNullable(request.getHeader(AuthConstant.AUTH_HEADER))
+                .filter(refreshToken -> refreshToken.startsWith(AuthConstant.AUTH_PREFIX))
+                .map(refreshToken -> refreshToken.replace(AuthConstant.AUTH_PREFIX, ""));
+    }
+
+    public Long getId(String token){
+        return getMemberIdClaim(token, AuthConstant.ID_CLAIM);
+    }
+
+    public String getRole(String token) {
+        return getStringClaim(token, AuthConstant.ROLE_CLAIM);
+    }
+
+    private Long getMemberIdClaim(String token, String claimName) {
+        Claims claims = parseClaims(token);
+        return claims.get(claimName, Long.class);
+    }
+
+    private String getStringClaim(String token, String claimName) {
+        Claims claims = parseClaims(token);
+        return claims.get(claimName, String.class);
+    }
+
+    private Claims parseClaims(String token) {
+        return Jwts.parser()
+                .verifyWith((SecretKey) key)
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
+    }
+
+}
