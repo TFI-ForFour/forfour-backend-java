@@ -4,8 +4,22 @@ spring:
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+    hibernate:
+      ddl-auto: update
 
 forfour:
   jwt:
     accessTokenExpiration: ${JWT_ACCESS_EXPIRATION}
     secretKey: ${JWT_SECRET_KEY}
+  auth:
+    kakao:
+      client: ${KAKAO_CLIENT_API_KEY}
+      redirect: ${KAKAO_REDIRECT_URL}
+      tokenUri: ${KAKAO_TOKEN_URI}
+      userProfile: ${KAKAO_USER_PROFILE}
+      clientSecret: ${KAKAO_CLIENT_SECRET}

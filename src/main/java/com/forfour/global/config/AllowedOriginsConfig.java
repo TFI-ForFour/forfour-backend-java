@@ -7,8 +7,8 @@ public class AllowedOriginsConfig {
 
     public String[] getAllowedOrigins(){
         return new String[]{
-            "localhost:3000",
-            "localhost:5173"
+            "http://localhost:3000",
+            "http://localhost:5173"
         };
     }
 
