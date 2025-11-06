@@ -21,7 +21,7 @@ public class MemberFacade {
     private final MemberGetService memberGetService;
     private final MemberSaveService memberSaveService;
 
-    public MemberEnterDto registerMember(String authCode) {
+    public MemberEnterDto kakaoLogin(String authCode) {
         Long kakaoId = kakaoService.kakaoLogin(authCode);
         Optional<Member> findMember = memberGetService.getMemberByKakaoId(kakaoId);
 
