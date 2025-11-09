@@ -29,4 +29,12 @@ public class Participant extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private RoomStatus roomStatus;
 
+    public static Participant of(Long roomId, Long memberId) {
+        return Participant.builder()
+                .room_id(roomId)
+                .memberId(memberId)
+                .roomStatus(RoomStatus.RECRUITING)
+                .build();
+    }
+
 }
