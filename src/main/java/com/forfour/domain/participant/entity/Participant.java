@@ -1,5 +1,6 @@
 package com.forfour.domain.participant.entity;
 
+import com.forfour.domain.member.entity.Member;
 import com.forfour.domain.room.entity.RoomStatus;
 import com.forfour.global.common.entity.BaseEntity;
 import jakarta.persistence.*;
@@ -24,19 +25,19 @@ public class Participant extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long room_id;
+    private Long roomId;
 
-    private Long memberId;
-
-    private String memberName; // 정합성 관리 필요.
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "memberId", referencedColumnName = "id")
+    private Member member;
 
     @Enumerated(EnumType.STRING)
     private RoomStatus roomStatus;
 
-    public static Participant of(Long roomId, Long memberId) {
+    public static Participant of(Long roomId, Member member) {
         return Participant.builder()
-                .room_id(roomId)
-                .memberId(memberId)
+                .roomId(roomId)
+                .member(member)
                 .roomStatus(RoomStatus.RECRUITING)
                 .build();
     }
