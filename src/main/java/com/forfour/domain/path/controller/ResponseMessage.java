@@ -8,6 +8,7 @@ import lombok.Getter;
 public enum ResponseMessage {
 
     PATH_CREATED("[산책 경로]를 생성했습니다."),
+    SINGLE_PATH_READ("[산책 경로]를 조회합니다."),
     ;
 
     private final String message;
