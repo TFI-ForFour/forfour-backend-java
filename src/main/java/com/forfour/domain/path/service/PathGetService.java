@@ -21,7 +21,12 @@ public class PathGetService {
 
     public Slice<Path> getPathScrollList(Pageable pageable) {
         return pathRepository.findPathScrollList(pageable);
+    }
 
+    public void validatePath(Long pathId) {
+        if (pathRepository.existsById(pathId)) {
+            throw new PathNotFoundException();
+        }
     }
 
 }

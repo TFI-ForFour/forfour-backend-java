@@ -13,4 +13,6 @@ public interface PathRepository extends JpaRepository<Path, Long> {
     @Query("SELECT p FROM Path p")
     Slice<Path> findPathScrollList(Pageable pageable);
 
+    boolean existsById(Long id);
+
 }
