@@ -44,4 +44,16 @@ public class Path extends BaseEntity {
                 .build();
     }
 
+    public void validateStartMarket(String uuid) {
+        if (!startMarketId.equals(UUID.fromString(uuid))) {
+            throw new PathNotMatchStartMarketException();
+        }
+    }
+
+    public void validateEndMarket(String uuid) {
+        if (!endMarketId.equals(UUID.fromString(uuid))) {
+            throw new PathNotMatchEndMarketException();
+        }
+    }
+
 }
