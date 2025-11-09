@@ -39,4 +39,14 @@ public class PathController implements PathSwagger{
         return ApiResponse.response(HttpStatus.OK, SINGLE_PATH_READ.getMessage(), response);
     }
 
+    @AuthGuard(MemberGuard.class)
+    @GetMapping("/v1/path-list")
+    public ApiResponse<SlicePathDto> scrollWalkingPath(
+            @RequestParam int pageSize,
+            @RequestParam int pageNum
+    ) {
+        SlicePathDto response = facade.readPathScrollList(pageSize, pageNum);
+        return ApiResponse.response(HttpStatus.OK, PATH_SCROLL_LIST_READ.getMessage(), response);
+    }
+
 }

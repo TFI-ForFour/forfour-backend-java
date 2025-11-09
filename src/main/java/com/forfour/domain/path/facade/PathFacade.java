@@ -34,4 +34,10 @@ public class PathFacade {
         return PathDetailDto.from(path);
     }
 
+    public SlicePathDto readPathScrollList(int pageSize, int pageNumber) {
+        PageRequest pageRequest = PageRequest.of(pageNumber, pageSize, Sort.by("id"));
+        Slice<Path> slice = pathGetService.getPathScrollList(pageRequest);
+        return SlicePathDto.from(slice);
+    }
+
 }
