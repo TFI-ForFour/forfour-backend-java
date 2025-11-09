@@ -1,5 +1,6 @@
 package com.forfour.domain.market.entity;
 
+import com.forfour.domain.market.dto.request.MarketSaveDto;
 import com.forfour.global.common.entity.BaseEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -25,5 +26,11 @@ public class Market extends BaseEntity {
     private String marketName;
 
     private String qrImageUrl;
+
+    public static Market from(MarketSaveDto dto) {
+        return Market.builder()
+                .marketName(dto.marketName())
+                .build();
+    }
 
 }
