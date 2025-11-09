@@ -1,7 +1,5 @@
 package com.forfour.domain.participant.entity;
 
-import com.forfour.domain.member.entity.Member;
-import com.forfour.domain.room.entity.Room;
 import com.forfour.domain.room.entity.RoomStatus;
 import com.forfour.global.common.entity.BaseEntity;
 import jakarta.persistence.*;
@@ -13,6 +11,12 @@ import lombok.experimental.SuperBuilder;
 @Entity
 @Getter
 @SuperBuilder
+@Table(uniqueConstraints = {
+        @UniqueConstraint(
+                name = "UK_participant_room_member",
+                columnNames = {"room_id", "memberId"}
+        )
+})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Participant extends BaseEntity {
 
