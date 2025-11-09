@@ -5,6 +5,7 @@ import com.forfour.domain.room.dto.response.RoomDetailDto;
 import com.forfour.domain.room.facade.RoomFacade;
 import com.forfour.global.auth.annotations.AuthGuard;
 import com.forfour.global.auth.guards.AdminGuard;
+import com.forfour.global.auth.guards.MemberGuard;
 import com.forfour.global.common.response.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,7 +21,7 @@ public class RoomController implements RoomSwagger{
 
     private final RoomFacade facade;
 
-    @AuthGuard(AdminGuard.class)
+    @AuthGuard({MemberGuard.class, AdminGuard.class})
     @PostMapping("/v1/room")
     public ApiResponse<RoomDetailDto> createRoom(
             @RequestBody RoomSaveDto dto

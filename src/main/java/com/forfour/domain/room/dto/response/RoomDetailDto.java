@@ -14,7 +14,7 @@ public record RoomDetailDto(
         Long leaderId,
         String leaderName,
         Long pathId,
-        Long missionId,
+        String missionName,
         RoomStatus status,
         LocalDateTime startAt
 ) {
@@ -25,7 +25,7 @@ public record RoomDetailDto(
                 .leaderId(room.getLeaderId())
                 .leaderName(leader.getNickname())
                 .pathId(room.getPathId())
-                .missionId(room.getMissionId())
+                .missionName(room.getMission().name())
                 .status(room.getStatus())
                 .startAt(room.getStartAt())
                 .build();

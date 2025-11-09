@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 public record RoomSaveDto(
         String title,
         Long pathId,
-        Long missionId,
+        String missionName,
         LocalDateTime startAt
 ) {
 }

@@ -23,7 +23,6 @@ public class RoomFacade {
 
     public RoomDetailDto createRoom(RoomSaveDto dto) {
         pathGetService.validatePath(dto.pathId());
-        // TODO missionGetService의 검증 로직 추가
 
         Member leader = memberGetService.getMember(MemberContext.getMemberId());
         Room savedRoom = roomSaveService.save(dto, leader.getId());
