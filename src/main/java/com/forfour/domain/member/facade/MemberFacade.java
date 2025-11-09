@@ -4,7 +4,7 @@ import com.forfour.domain.member.dto.response.MemberEnterDto;
 import com.forfour.domain.member.entity.Member;
 import com.forfour.domain.member.service.MemberGetService;
 import com.forfour.domain.member.service.MemberSaveService;
-import com.forfour.global.auth.facade.KakaoService;
+import com.forfour.global.auth.service.KakaoService;
 import com.forfour.global.jwt.dto.JwtTokenResponseDto;
 import com.forfour.global.jwt.service.JwtService;
 import lombok.RequiredArgsConstructor;
