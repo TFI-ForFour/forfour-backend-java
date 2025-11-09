@@ -1,7 +1,6 @@
 package com.forfour.domain.room.entity;
 
-import com.forfour.domain.member.entity.Member;
-import com.forfour.domain.path.entity.Path;
+import com.forfour.domain.room.dto.request.RoomSaveDto;
 import com.forfour.global.common.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -37,5 +36,16 @@ public class Room extends BaseEntity {
     private LocalDateTime stopwatchStartAt;
 
     private LocalDateTime stopwatchEndAt;
+
+    public static Room of(RoomSaveDto dto,Long leaderId) {
+        return Room.builder()
+                .title(dto.title())
+                .leaderId(leaderId)
+                .pathId(dto.pathId())
+                .missionId(dto.missionId())
+                .status(RoomStatus.RECRUITING)
+                .startAt(dto.startAt())
+                .build();
+    }
 
 }
