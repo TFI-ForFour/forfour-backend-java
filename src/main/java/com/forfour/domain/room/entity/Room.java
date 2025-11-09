@@ -76,4 +76,8 @@ public class Room extends BaseEntity {
         this.memberCount++;
     }
 
+    public void closed() {
+        this.isActive = false;
+    }
+
 }
