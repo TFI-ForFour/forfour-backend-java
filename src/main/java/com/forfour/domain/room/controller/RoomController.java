@@ -2,19 +2,23 @@ package com.forfour.domain.room.controller;
 
 import com.forfour.domain.room.dto.request.RoomSaveDto;
 import com.forfour.domain.room.dto.response.RoomDetailDto;
+import com.forfour.domain.room.dto.response.SliceRoomDto;
+import com.forfour.domain.room.entity.RoomStatus;
 import com.forfour.domain.room.facade.RoomFacade;
 import com.forfour.global.auth.annotations.AuthGuard;
 import com.forfour.global.auth.guards.AdminGuard;
 import com.forfour.global.auth.guards.MemberGuard;
 import com.forfour.global.common.response.ApiResponse;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 import static com.forfour.domain.room.controller.ResponseMessage.ROOM_CREATED;
+import static com.forfour.domain.room.controller.ResponseMessage.ROOM_SCROLL_LIST_READ;
 
 @RestController
 @RequiredArgsConstructor
@@ -25,7 +29,7 @@ public class RoomController implements RoomSwagger{
     @AuthGuard({MemberGuard.class, AdminGuard.class})
     @PostMapping("/v1/room")
     public ApiResponse<RoomDetailDto> createRoom(
-            @RequestBody RoomSaveDto dto
+            @RequestBody @Validated RoomSaveDto dto
     ) {
         RoomDetailDto response = facade.createRoom(dto);
         return ApiResponse.response(HttpStatus.OK, ROOM_CREATED.getMeesage(), response);
@@ -38,6 +42,18 @@ public class RoomController implements RoomSwagger{
     ) {
         facade.participateRoom(roomId);
         return ApiResponse.response(HttpStatus.OK, ROOM_CREATED.getMeesage());
+    }
+
+    @AuthGuard({MemberGuard.class, AdminGuard.class})
+    @GetMapping("/v1/room-list")
+    public ApiResponse<SliceRoomDto> scrollRoom(
+            @RequestParam int pageSize,
+            @RequestParam int pageNum,
+            @Schema(implementation = RoomStatus.class)
+            @RequestParam @Nullable String roomStatus
+    ) {
+        SliceRoomDto response = facade.readRoomScrollList(pageSize, pageNum, roomStatus);
+        return ApiResponse.response(HttpStatus.OK, ROOM_SCROLL_LIST_READ.getMeesage(), response);
     }
 
 }

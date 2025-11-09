@@ -1,5 +1,6 @@
 package com.forfour.domain.room.entity;
 
+import com.forfour.domain.member.entity.Member;
 import com.forfour.domain.room.dto.request.RoomSaveDto;
 import com.forfour.domain.room.exception.RoomIsFullException;
 import com.forfour.domain.room.exception.RoomIsNotRecruitingException;
@@ -24,7 +25,9 @@ public class Room extends BaseEntity {
 
     private String title;
 
-    private Long leaderId;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "leaderId", referencedColumnName = "id")
+    private Member leader;
 
     private Long pathId;
 
@@ -33,6 +36,8 @@ public class Room extends BaseEntity {
     private int maxMemberCount;
 
     private int memberCount;
+
+    private boolean isActive;
 
     @Enumerated(EnumType.STRING)
     private RoomStatus status;
@@ -43,16 +48,17 @@ public class Room extends BaseEntity {
 
     private LocalDateTime stopwatchEndAt;
 
-    public static Room of(RoomSaveDto dto, Long leaderId) {
+    public static Room of(RoomSaveDto dto, Member leader) {
         return Room.builder()
                 .title(dto.title())
-                .leaderId(leaderId)
+                .leader(leader)
                 .pathId(dto.pathId())
                 .mission(Mission.value(dto.missionName()))
                 .maxMemberCount(dto.maxMemberCount())
                 .memberCount(1)
                 .status(RoomStatus.RECRUITING)
                 .startAt(dto.startAt())
+                .isActive(true)
                 .build();
     }
 
@@ -68,6 +74,10 @@ public class Room extends BaseEntity {
 
     public void increaseMemberCount() {
         this.memberCount++;
+    }
+
+    public void closed() {
+        this.isActive = false;
     }
 
 }

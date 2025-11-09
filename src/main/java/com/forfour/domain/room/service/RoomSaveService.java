@@ -1,5 +1,6 @@
 package com.forfour.domain.room.service;
 
+import com.forfour.domain.member.entity.Member;
 import com.forfour.domain.room.dto.request.RoomSaveDto;
 import com.forfour.domain.room.entity.Room;
 import com.forfour.domain.room.repository.RoomRepository;
@@ -12,8 +13,8 @@ public class RoomSaveService {
 
     private final RoomRepository roomRepository;
 
-    public Room save(RoomSaveDto dto, Long leaderId) {
-        return roomRepository.save(Room.of(dto, leaderId));
+    public Room save(RoomSaveDto dto, Member leader) {
+        return roomRepository.save(Room.of(dto, leader));
     }
 
 }
