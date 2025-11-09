@@ -11,8 +11,8 @@ public class ParticipantSaveService {
 
     private final ParticipantRepository participantRepository;
 
-    public Participant save(Long roomId, Long leaderId) {
-        return participantRepository.save(Participant.of(roomId, leaderId));
+    public Participant save(Long roomId, Long memberId) {
+        return participantRepository.save(Participant.of(roomId, memberId));
     }
 
 }

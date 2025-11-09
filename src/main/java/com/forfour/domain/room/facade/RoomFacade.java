@@ -7,16 +7,19 @@ import com.forfour.domain.path.service.PathGetService;
 import com.forfour.domain.room.dto.request.RoomSaveDto;
 import com.forfour.domain.room.dto.response.RoomDetailDto;
 import com.forfour.domain.room.entity.Room;
+import com.forfour.domain.room.service.RoomGetService;
 import com.forfour.domain.room.service.RoomSaveService;
 import com.forfour.global.auth.context.MemberContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
 public class RoomFacade {
 
     private final RoomSaveService roomSaveService;
+    private final RoomGetService roomGetService;
     private final ParticipantSaveService participantSaveService;
     private final PathGetService pathGetService;
     private final MemberGetService memberGetService;
@@ -26,12 +29,22 @@ public class RoomFacade {
 
         Member leader = memberGetService.getMember(MemberContext.getMemberId());
         Room savedRoom = roomSaveService.save(dto, leader.getId());
-        saveLeader(savedRoom.getId(), leader.getId());
+        enterRoom(savedRoom.getId(), leader.getId());
 
         return RoomDetailDto.from(savedRoom, leader);
     }
 
-    private void saveLeader(Long roomId, Long leaderId) {
+    @Transactional
+    public void participateRoom(Long roomId) {
+        Room room = roomGetService.getRoomUsingLock(roomId);
+        room.checkParticipate();
+
+        Long participantId = MemberContext.getMemberId();
+        enterRoom(room.getId(), participantId);
+        room.increaseMemberCount();
+    }
+
+    private void enterRoom(Long roomId, Long leaderId) {
         participantSaveService.save(roomId, leaderId);
     }
 

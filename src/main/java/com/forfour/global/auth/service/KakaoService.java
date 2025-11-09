@@ -1,6 +1,5 @@
-package com.forfour.global.auth.facade;
+package com.forfour.global.auth.service;
 
-import com.forfour.domain.member.service.MemberGetService;
 import com.forfour.global.auth.kakao.dto.KaKaoDTO;
 import com.forfour.global.auth.kakao.utils.KakaoUtil;
 import lombok.RequiredArgsConstructor;
