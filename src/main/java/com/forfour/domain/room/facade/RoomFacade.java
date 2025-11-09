@@ -36,12 +36,10 @@ public class RoomFacade {
 
     @Transactional
     public void participateRoom(Long roomId) {
-        Long participantId = MemberContext.getMemberId();
-
         Room room = roomGetService.getRoomUsingLock(roomId);
         room.checkParticipate();
 
-        participantSaveService.save(roomId, participantId);
+        participantSaveService.save(roomId, MemberContext.getMemberId());
         room.increaseMemberCount();
     }
 
