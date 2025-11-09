@@ -29,7 +29,7 @@ public class RoomFacade {
 
         Member leader = memberGetService.getMember(MemberContext.getMemberId());
         Room savedRoom = roomSaveService.save(dto, leader.getId());
-        saveLeader(savedRoom.getId(), leader.getId());
+        enterRoom(savedRoom.getId(), leader.getId());
 
         return RoomDetailDto.from(savedRoom, leader);
     }
@@ -39,11 +39,12 @@ public class RoomFacade {
         Room room = roomGetService.getRoomUsingLock(roomId);
         room.checkParticipate();
 
-        participantSaveService.save(roomId, MemberContext.getMemberId());
+        Long participantId = MemberContext.getMemberId();
+        enterRoom(room.getId(), participantId);
         room.increaseMemberCount();
     }
 
-    private void saveLeader(Long roomId, Long leaderId) {
+    private void enterRoom(Long roomId, Long leaderId) {
         participantSaveService.save(roomId, leaderId);
     }
 
