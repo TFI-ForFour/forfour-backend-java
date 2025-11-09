@@ -24,7 +24,7 @@ public class PathGetService {
     }
 
     public void validatePath(Long pathId) {
-        if (pathRepository.existsById(pathId)) {
+        if (!pathRepository.existsById(pathId)) {
             throw new PathNotFoundException();
         }
     }
