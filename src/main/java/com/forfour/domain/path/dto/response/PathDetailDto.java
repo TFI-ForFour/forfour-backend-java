@@ -17,8 +17,8 @@ public record PathDetailDto(
                 .pathId(path.getId())
                 .pathName(path.getPathName())
                 .distance(path.getDistance())
-                .startMarketId(path.getPathName())
-                .endMarketId(path.getPathName())
+                .startMarketId(path.getStartMarketId().toString())
+                .endMarketId(path.getEndMarketId().toString())
                 .pathImageUrl(path.getPathImageUrl())
                 .build();
     }
