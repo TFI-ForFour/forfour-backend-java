@@ -13,7 +13,7 @@ import static com.forfour.domain.member.controller.ResponseMessage.MEMBER_REGIST
 
 @RestController
 @RequiredArgsConstructor
-public class MemberController {
+public class MemberController implements MemberSwagger{
 
     private final MemberFacade memberFacade;
 
