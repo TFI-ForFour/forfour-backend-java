@@ -1,6 +1,8 @@
 package com.forfour.domain.room.entity;
 
 import com.forfour.domain.room.dto.request.RoomSaveDto;
+import com.forfour.domain.room.exception.RoomIsFullException;
+import com.forfour.domain.room.exception.RoomIsNotRecruitingException;
 import com.forfour.global.common.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -28,6 +30,10 @@ public class Room extends BaseEntity {
 
     private Mission mission; // THINK 그냥 missionName 때려박아도 상관없지않을까?
 
+    private int maxMemberCount;
+
+    private int memberCount;
+
     @Enumerated(EnumType.STRING)
     private RoomStatus status;
 
@@ -43,9 +49,25 @@ public class Room extends BaseEntity {
                 .leaderId(leaderId)
                 .pathId(dto.pathId())
                 .mission(Mission.value(dto.missionName()))
+                .maxMemberCount(dto.maxMemberCount())
+                .memberCount(1)
                 .status(RoomStatus.RECRUITING)
                 .startAt(dto.startAt())
                 .build();
+    }
+
+    public void checkParticipate() {
+        if (status != RoomStatus.RECRUITING) {
+            throw new RoomIsNotRecruitingException();
+        }
+
+        if (this.memberCount == this.maxMemberCount) {
+            throw new RoomIsFullException();
+        }
+    }
+
+    public void increaseMemberCount() {
+        this.memberCount++;
     }
 
 }

@@ -17,4 +17,9 @@ public class RoomGetService {
                 .orElseThrow(RoomNotFoundException::new);
     }
 
+    public Room getRoomUsingLock(Long roomId) {
+        return roomRepository.findByIdWithPessimisticLock(roomId)
+                .orElseThrow(RoomNotFoundException::new);
+    }
+
 }
