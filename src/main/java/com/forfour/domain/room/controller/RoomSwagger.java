@@ -2,6 +2,7 @@ package com.forfour.domain.room.controller;
 
 import com.forfour.domain.room.dto.request.RoomSaveDto;
 import com.forfour.domain.room.dto.response.RoomDetailDto;
+import com.forfour.domain.room.dto.response.RoomWithParticipantsDto;
 import com.forfour.domain.room.dto.response.SliceRoomDto;
 import com.forfour.domain.room.entity.RoomStatus;
 import com.forfour.global.common.response.ApiResponse;
@@ -22,6 +23,9 @@ public interface RoomSwagger {
 
     @Operation(description = "산책 방 참여 API", summary = "산책 방 참여 API")
     ApiResponse<Void> participateRoom(@PathVariable Long roomId);
+
+    @Operation(description = "[산책 방 + 참여자 정보] 조회 API", summary = "[산책 방 + 참여자 정보] 조회 API")
+    ApiResponse<RoomWithParticipantsDto> readRoom(@PathVariable Long roomId);
 
     @Operation(description = "산책 방 목록 조회 API", summary = "산책 방 목록 조회 API")
     ApiResponse<SliceRoomDto> scrollRoom(

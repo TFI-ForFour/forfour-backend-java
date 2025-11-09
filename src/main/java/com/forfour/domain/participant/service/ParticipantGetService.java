@@ -1,19 +1,20 @@
 package com.forfour.domain.participant.service;
 
-import com.forfour.domain.member.entity.Member;
 import com.forfour.domain.participant.entity.Participant;
 import com.forfour.domain.participant.repository.ParticipantRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
-public class ParticipantSaveService {
+public class ParticipantGetService {
 
     private final ParticipantRepository participantRepository;
 
-    public Participant save(Long roomId, Member member) {
-        return participantRepository.save(Participant.of(roomId, member));
+    public List<Participant> getParticipants(Long roomId) {
+        return participantRepository.findParticipantsByRoomId(roomId);
     }
 
 }

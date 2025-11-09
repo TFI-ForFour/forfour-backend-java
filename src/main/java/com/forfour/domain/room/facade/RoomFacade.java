@@ -2,10 +2,13 @@ package com.forfour.domain.room.facade;
 
 import com.forfour.domain.member.entity.Member;
 import com.forfour.domain.member.service.MemberGetService;
+import com.forfour.domain.participant.entity.Participant;
+import com.forfour.domain.participant.service.ParticipantGetService;
 import com.forfour.domain.participant.service.ParticipantSaveService;
 import com.forfour.domain.path.service.PathGetService;
 import com.forfour.domain.room.dto.request.RoomSaveDto;
 import com.forfour.domain.room.dto.response.RoomDetailDto;
+import com.forfour.domain.room.dto.response.RoomWithParticipantsDto;
 import com.forfour.domain.room.dto.response.SliceRoomDto;
 import com.forfour.domain.room.entity.Room;
 import com.forfour.domain.room.entity.RoomStatus;
@@ -20,12 +23,15 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class RoomFacade {
 
     private final RoomSaveService roomSaveService;
     private final RoomGetService roomGetService;
+    private final ParticipantGetService participantGetService;
     private final ParticipantSaveService participantSaveService;
     private final PathGetService pathGetService;
     private final MemberGetService memberGetService;
@@ -35,7 +41,7 @@ public class RoomFacade {
 
         Member leader = memberGetService.getMember(MemberContext.getMemberId());
         Room savedRoom = roomSaveService.save(dto, leader);
-        enterRoom(savedRoom.getId(), leader.getId());
+        enterRoom(savedRoom.getId(), leader);
 
         return RoomDetailDto.of(savedRoom, leader);
     }
@@ -45,9 +51,15 @@ public class RoomFacade {
         Room room = roomGetService.getRoomUsingLock(roomId);
         room.checkParticipate();
 
-        Long participantId = MemberContext.getMemberId();
-        enterRoom(room.getId(), participantId);
+        Member participant = memberGetService.getMember(MemberContext.getMemberId());
+        enterRoom(room.getId(), participant);
         room.increaseMemberCount();
+    }
+
+    public RoomWithParticipantsDto readRoom(Long roomId) {
+        List<Participant> participants = participantGetService.getParticipants(roomId);
+        Room room = roomGetService.getRoom(roomId);
+        return RoomWithParticipantsDto.of(room, participants);
     }
 
     public SliceRoomDto readRoomScrollList(int pageSize, int pageNum, String roomStatus) {
@@ -62,8 +74,8 @@ public class RoomFacade {
         return SliceRoomDto.from(slice);
     }
 
-    private void enterRoom(Long roomId, Long leaderId) {
-        participantSaveService.save(roomId, leaderId);
+    private void enterRoom(Long roomId, Member member) {
+        participantSaveService.save(roomId, member);
     }
 
 }
