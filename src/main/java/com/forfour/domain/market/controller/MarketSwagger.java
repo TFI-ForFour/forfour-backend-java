@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 @Tag(name = "가게 등록")
 public interface MarketSwagger {
 
-    @Operation(description = "협력 가게 등록 API")
-    public ApiResponse<MarketDetailDto> registerMarket(@RequestBody MarketSaveDto dto);
+    @Operation(description = "협력 가게 등록 API", summary = "협력 가게 등록 API")
+    ApiResponse<MarketDetailDto> registerMarket(@RequestBody MarketSaveDto dto);
 
 }

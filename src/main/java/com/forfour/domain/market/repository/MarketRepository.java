@@ -11,4 +11,6 @@ import java.util.UUID;
 public interface MarketRepository extends JpaRepository<Market, Long> {
 
     Optional<Market> findById(UUID uuid);
+
+    boolean existsById(UUID uuid);
 }
