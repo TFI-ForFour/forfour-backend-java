@@ -2,11 +2,17 @@ package com.forfour.domain.room.controller;
 
 import com.forfour.domain.room.dto.request.RoomSaveDto;
 import com.forfour.domain.room.dto.response.RoomDetailDto;
+import com.forfour.domain.room.dto.response.SliceRoomDto;
+import com.forfour.domain.room.entity.RoomStatus;
 import com.forfour.global.common.response.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.annotation.Nullable;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Tag(name = "산책 방")
 public interface RoomSwagger {
@@ -16,5 +22,14 @@ public interface RoomSwagger {
 
     @Operation(description = "산책 방 참여 API", summary = "산책 방 참여 API")
     ApiResponse<Void> participateRoom(@PathVariable Long roomId);
+
+    @Operation(description = "산책 방 목록 조회 API", summary = "산책 방 목록 조회 API")
+    ApiResponse<SliceRoomDto> scrollRoom(
+            @RequestParam int pageSize,
+            @RequestParam int pageNum,
+
+            @Schema(implementation = RoomStatus.class)
+            @RequestParam @Nullable String roomStatus
+    );
 
 }
