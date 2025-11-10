@@ -57,11 +57,20 @@ public class RoomController implements RoomSwagger{
     public ApiResponse<SliceRoomDto> scrollRoom(
             @RequestParam int pageSize,
             @RequestParam int pageNum,
-            @Schema(implementation = RoomStatus.class)
             @RequestParam @Nullable String roomStatus
     ) {
         SliceRoomDto response = facade.readRoomScrollList(pageSize, pageNum, roomStatus);
         return ApiResponse.response(HttpStatus.OK, ROOM_SCROLL_LIST_READ.getMeesage(), response);
+    }
+
+    @AuthGuard({MemberGuard.class, AdminGuard.class})
+    @PatchMapping("/v1/room/{roomId}/recruit-status")
+    public ApiResponse<Void> updateRoomRecruitStatus(
+            @PathVariable Long roomId,
+            @RequestParam String roomStatus
+    ) {
+        facade.updateRecruitStatus(roomId, roomStatus);
+        return ApiResponse.response(HttpStatus.OK, ROOM_RECRUIT_STATUS_UPDATED.getMeesage());
     }
 
 }
