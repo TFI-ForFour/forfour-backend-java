@@ -4,6 +4,7 @@ import com.forfour.domain.member.entity.Member;
 import com.forfour.domain.room.dto.request.RoomSaveDto;
 import com.forfour.domain.room.exception.RoomIsFullException;
 import com.forfour.domain.room.exception.RoomIsNotRecruitingException;
+import com.forfour.domain.room.exception.RoomNotEnoughMinimumException;
 import com.forfour.global.common.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -19,6 +20,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Room extends BaseEntity {
 
+    private static final int MINIMUM_MEMBER_COUNT = 3;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -31,7 +34,7 @@ public class Room extends BaseEntity {
 
     private Long pathId;
 
-    private Mission mission; // THINK 그냥 missionName 때려박아도 상관없지않을까?
+    private Mission mission;
 
     private int maxMemberCount;
 
@@ -78,6 +81,20 @@ public class Room extends BaseEntity {
 
     public void closed() {
         this.isActive = false;
+    }
+
+    public boolean checkStatus(RoomStatus status) {
+        return this.status == status;
+    }
+
+    public void updateStatus(RoomStatus status) {
+        this.status = status;
+    }
+
+    public void validateMinimumMember() {
+        if (this.memberCount < MINIMUM_MEMBER_COUNT) {
+            throw new RoomNotEnoughMinimumException();
+        }
     }
 
 }
