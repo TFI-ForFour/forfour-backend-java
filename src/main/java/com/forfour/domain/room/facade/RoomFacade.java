@@ -5,6 +5,7 @@ import com.forfour.domain.member.service.MemberGetService;
 import com.forfour.domain.participant.entity.Participant;
 import com.forfour.domain.participant.service.ParticipantGetService;
 import com.forfour.domain.participant.service.ParticipantSaveService;
+import com.forfour.domain.path.entity.Path;
 import com.forfour.domain.path.service.PathGetService;
 import com.forfour.domain.room.dto.request.RoomSaveDto;
 import com.forfour.domain.room.dto.response.RoomDetailDto;
@@ -41,6 +42,7 @@ public class RoomFacade {
     private final MemberGetService memberGetService;
     private final List<RecruitStatusStrategy> strategies;
 
+    @Transactional
     public RoomDetailDto createRoom(RoomSaveDto dto) {
         pathGetService.validatePath(dto.pathId());
 
@@ -86,6 +88,22 @@ public class RoomFacade {
 
         RecruitStatusStrategy statusStrategy = findRecruitStrategy(RoomStatus.valueOf(roomStatus));
         statusStrategy.apply(room);
+    }
+
+    @Transactional
+    public void startWalking(Long roomId, String marketId) {
+        Room room = roomGetService.getRoomUsingLock(roomId);
+        Path path = pathGetService.getPath(room.getPathId());
+        room.validateRoomLeader(MemberContext.getMemberId());
+        path.validateStartMarket(marketId);
+
+        updateParticipantStatus(roomId);
+        room.updateStatus(RoomStatus.PROGRESS);
+    }
+
+    private void updateParticipantStatus(Long roomId) {
+        participantGetService.getParticipants(roomId)
+                .forEach(p -> p.updateStatus(RoomStatus.PROGRESS));
     }
 
     private RecruitStatusStrategy findRecruitStrategy(RoomStatus status) {

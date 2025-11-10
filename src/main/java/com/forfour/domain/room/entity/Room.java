@@ -4,6 +4,7 @@ import com.forfour.domain.member.entity.Member;
 import com.forfour.domain.room.dto.request.RoomSaveDto;
 import com.forfour.domain.room.exception.RoomIsFullException;
 import com.forfour.domain.room.exception.RoomIsNotRecruitingException;
+import com.forfour.domain.room.exception.RoomLeaderNotEqualException;
 import com.forfour.domain.room.exception.RoomNotEnoughMinimumException;
 import com.forfour.global.common.entity.BaseEntity;
 import jakarta.persistence.*;
@@ -81,6 +82,12 @@ public class Room extends BaseEntity {
 
     public void closed() {
         this.isActive = false;
+    }
+
+    public void validateRoomLeader(Long memberId) {
+        if(this.leader.getId() != memberId) {
+            throw new RoomLeaderNotEqualException();
+        }
     }
 
     public boolean checkStatus(RoomStatus status) {

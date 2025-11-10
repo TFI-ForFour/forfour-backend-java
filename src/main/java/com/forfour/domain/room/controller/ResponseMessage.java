@@ -12,6 +12,7 @@ public enum ResponseMessage {
     ROOM_SCROLL_LIST_READ("[산책 방]에 목록을 조회합니다."),
     ROOM_READ("[산책 방 + 참여자 정보]를 조회합니다."),
     ROOM_RECRUIT_STATUS_UPDATED("[산책방 모집 상태]를 변경합니다."),
+    WALKING_START("[산책]을 시작합니다."),
     ;
 
     private final String meesage;
