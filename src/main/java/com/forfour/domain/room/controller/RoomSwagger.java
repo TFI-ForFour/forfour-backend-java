@@ -5,12 +5,16 @@ import com.forfour.domain.room.dto.response.RoomDetailDto;
 import com.forfour.domain.room.dto.response.RoomWithParticipantsDto;
 import com.forfour.domain.room.dto.response.SliceRoomDto;
 import com.forfour.domain.room.entity.RoomStatus;
+import com.forfour.global.auth.annotations.AuthGuard;
+import com.forfour.global.auth.guards.AdminGuard;
+import com.forfour.global.auth.guards.MemberGuard;
 import com.forfour.global.common.response.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Nullable;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -31,9 +35,15 @@ public interface RoomSwagger {
     ApiResponse<SliceRoomDto> scrollRoom(
             @RequestParam int pageSize,
             @RequestParam int pageNum,
-
             @Schema(implementation = RoomStatus.class)
             @RequestParam @Nullable String roomStatus
+    );
+
+    @Operation(description = "산책 모집 상태 변경 API", summary = "산책 모집 상태 변경 API")
+    ApiResponse<Void> updateRoomRecruitStatus(
+            @PathVariable Long roomId,
+            @Schema(example = "RECRUITING, RECRUITMENT_ENDED")
+            @RequestParam String roomStatus
     );
 
 }

@@ -2,12 +2,15 @@ package com.forfour.domain.room.service;
 
 import com.forfour.domain.room.entity.Room;
 import com.forfour.domain.room.entity.RoomStatus;
+import com.forfour.domain.room.exception.RoomLeaderNotEqualException;
 import com.forfour.domain.room.exception.RoomNotFoundException;
 import com.forfour.domain.room.repository.RoomRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
+
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
