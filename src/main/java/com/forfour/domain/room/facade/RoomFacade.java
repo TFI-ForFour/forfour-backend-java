@@ -90,6 +90,7 @@ public class RoomFacade {
         statusStrategy.apply(room);
     }
 
+    // TODO Spring Event 관심사 분리
     @Transactional
     public void startWalking(Long roomId, String marketId) {
         Room room = roomGetService.getRoomUsingLock(roomId);
