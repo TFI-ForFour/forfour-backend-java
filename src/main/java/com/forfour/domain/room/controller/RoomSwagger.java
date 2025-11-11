@@ -46,4 +46,10 @@ public interface RoomSwagger {
             @RequestParam String roomStatus
     );
 
+    @Operation(description = "산책 시작 API", summary = "산책 시작 API")
+    ApiResponse<Void> startWalking(
+            @PathVariable Long roomId,
+            @PathVariable String marketId
+    );
+
 }

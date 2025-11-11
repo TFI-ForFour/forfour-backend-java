@@ -5,6 +5,7 @@ import com.forfour.domain.member.service.MemberGetService;
 import com.forfour.domain.participant.entity.Participant;
 import com.forfour.domain.participant.service.ParticipantGetService;
 import com.forfour.domain.participant.service.ParticipantSaveService;
+import com.forfour.domain.path.entity.Path;
 import com.forfour.domain.path.service.PathGetService;
 import com.forfour.domain.room.dto.request.RoomSaveDto;
 import com.forfour.domain.room.dto.response.RoomDetailDto;
@@ -41,6 +42,7 @@ public class RoomFacade {
     private final MemberGetService memberGetService;
     private final List<RecruitStatusStrategy> strategies;
 
+    @Transactional
     public RoomDetailDto createRoom(RoomSaveDto dto) {
         pathGetService.validatePath(dto.pathId());
 
@@ -82,10 +84,27 @@ public class RoomFacade {
     @Transactional
     public void updateRecruitStatus(Long roomId, String roomStatus) {
         Room room = roomGetService.getRoomUsingLock(roomId);
-        validateRoomLeader(room, MemberContext.getMemberId());
+        room.validateRoomLeader(MemberContext.getMemberId());
 
         RecruitStatusStrategy statusStrategy = findRecruitStrategy(RoomStatus.valueOf(roomStatus));
         statusStrategy.apply(room);
+    }
+
+    // TODO Spring Event 관심사 분리
+    @Transactional
+    public void startWalking(Long roomId, String marketId) {
+        Room room = roomGetService.getRoomUsingLock(roomId);
+        Path path = pathGetService.getPath(room.getPathId());
+        room.validateRoomLeader(MemberContext.getMemberId());
+        path.validateStartMarket(marketId);
+
+        updateParticipantStatus(roomId);
+        room.updateStatus(RoomStatus.PROGRESS);
+    }
+
+    private void updateParticipantStatus(Long roomId) {
+        participantGetService.getParticipants(roomId)
+                .forEach(p -> p.updateStatus(RoomStatus.PROGRESS));
     }
 
     private RecruitStatusStrategy findRecruitStrategy(RoomStatus status) {
@@ -97,12 +116,6 @@ public class RoomFacade {
 
     private void enterRoom(Long roomId, Member member) {
         participantSaveService.save(roomId, member);
-    }
-
-    private void validateRoomLeader(Room room, Long memberId) {
-        if(!Objects.equals(room.getLeader().getId(), memberId)) {
-            throw new RoomLeaderNotEqualException();
-        }
     }
 
 }

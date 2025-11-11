@@ -42,4 +42,8 @@ public class Participant extends BaseEntity {
                 .build();
     }
 
+    public void updateStatus(RoomStatus roomStatus) {
+        this.roomStatus = roomStatus;
+    }
+
 }

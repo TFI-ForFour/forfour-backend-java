@@ -73,4 +73,14 @@ public class RoomController implements RoomSwagger{
         return ApiResponse.response(HttpStatus.OK, ROOM_RECRUIT_STATUS_UPDATED.getMeesage());
     }
 
+    @AuthGuard({MemberGuard.class, AdminGuard.class})
+    @PatchMapping("/v1/room/{roomId}/market/{marketId}")
+    public ApiResponse<Void> startWalking(
+            @PathVariable Long roomId,
+            @PathVariable String marketId
+    ) {
+        facade.startWalking(roomId, marketId);
+        return ApiResponse.response(HttpStatus.OK, WALKING_START.getMeesage());
+    }
+
 }
