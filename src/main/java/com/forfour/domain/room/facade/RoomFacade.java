@@ -84,7 +84,7 @@ public class RoomFacade {
     @Transactional
     public void updateRecruitStatus(Long roomId, String roomStatus) {
         Room room = roomGetService.getRoomUsingLock(roomId);
-        validateRoomLeader(room, MemberContext.getMemberId());
+        room.validateRoomLeader(MemberContext.getMemberId());
 
         RecruitStatusStrategy statusStrategy = findRecruitStrategy(RoomStatus.valueOf(roomStatus));
         statusStrategy.apply(room);
@@ -115,12 +115,6 @@ public class RoomFacade {
 
     private void enterRoom(Long roomId, Member member) {
         participantSaveService.save(roomId, member);
-    }
-
-    private void validateRoomLeader(Room room, Long memberId) {
-        if(!Objects.equals(room.getLeader().getId(), memberId)) {
-            throw new RoomLeaderNotEqualException();
-        }
     }
 
 }
