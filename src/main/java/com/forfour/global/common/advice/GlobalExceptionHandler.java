@@ -23,7 +23,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(BaseException.class)
     public ResponseEntity<ApiResponse<Void>> handleBaseException(BaseException e) {
         logWarning(e, e.getStatus().value());
-        return responseException(e.getStatus(), e.getMessage(), null);
+        return responseException(e.getStatus(), e.getCode(), e.getMessage(), null);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -40,25 +40,25 @@ public class GlobalExceptionHandler {
                 .toList();
 
         logWarning(e, errorCode.getStatus().value());
-        return responseException(errorCode.getStatus(), errorCode.getMessage(), errors);
+        return responseException(errorCode.getStatus(), errorCode.getCode(), errorCode.getMessage(), errors);
     }
 
     @ExceptionHandler(NoResourceFoundException.class)
     public ResponseEntity<ApiResponse<Void>> handleNoResourceFound(NoResourceFoundException e) {
         ErrorCode errorCode = ErrorCode.RESOURCE_NOT_FOUND;
         logWarning(e, errorCode.getStatus().value());
-        return responseException(errorCode.getStatus(), errorCode.getMessage(), null);
+        return responseException(errorCode.getStatus(), errorCode.getCode(), errorCode.getMessage(), null);
     }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResponse<Void>> handleException(Exception e) {
         ErrorCode errorCode = ErrorCode.INTERNAL_SERVER_ERROR;
         logWarning(e, errorCode.getStatus().value());
-        return responseException(errorCode.getStatus(), e.getMessage(), null);
+        return responseException(errorCode.getStatus(), errorCode.getCode(), e.getMessage(), null);
     }
 
-    private <T> ResponseEntity<ApiResponse<T>> responseException(HttpStatus status, String message, T data ) {
-        ApiResponse<T> response = ApiResponse.response(status, message, data);
+    private <T> ResponseEntity<ApiResponse<T>> responseException(HttpStatus status, String code, String message, T data ) {
+        ApiResponse<T> response = ApiResponse.response(status, code, message, data);
 
         return ResponseEntity
                 .status(status)
