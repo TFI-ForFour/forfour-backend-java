@@ -1,11 +1,9 @@
 package com.forfour.domain.path.entity;
 
-import com.forfour.domain.market.entity.Market;
 import com.forfour.domain.path.dto.request.PathSaveDto;
-import com.forfour.domain.path.exception.PathNotMatchEndMarketException;
-import com.forfour.domain.path.exception.PathNotMatchStartMarketException;
-import com.forfour.domain.room.entity.Room;
+import com.forfour.domain.path.exception.PathExceptionInformation;
 import com.forfour.global.common.entity.BaseEntity;
+import com.forfour.global.common.exception.BaseException;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -46,13 +44,13 @@ public class Path extends BaseEntity {
 
     public void validateStartMarket(String uuid) {
         if (!startMarketId.equals(UUID.fromString(uuid))) {
-            throw new PathNotMatchStartMarketException();
+            throw BaseException.from(PathExceptionInformation.PATH_NOT_MATCH_START_MARKET);
         }
     }
 
     public void validateEndMarket(String uuid) {
         if (!endMarketId.equals(UUID.fromString(uuid))) {
-            throw new PathNotMatchEndMarketException();
+            throw BaseException.from(PathExceptionInformation.PATH_NOT_MATCH_END_MARKET);
         }
     }
 
