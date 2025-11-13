@@ -13,6 +13,7 @@ import com.forfour.domain.room.dto.response.RoomWithParticipantsDto;
 import com.forfour.domain.room.dto.response.SliceRoomDto;
 import com.forfour.domain.room.entity.Room;
 import com.forfour.domain.room.entity.RoomStatus;
+import com.forfour.domain.room.exception.RoomException;
 import com.forfour.domain.room.exception.RoomExceptionInformation;
 import com.forfour.domain.room.service.RoomGetService;
 import com.forfour.domain.room.service.RoomSaveService;
@@ -111,7 +112,7 @@ public class RoomFacade {
         return strategies.stream()
                 .filter(strategy -> strategy.support(status))
                 .findFirst()
-                .orElseThrow(() -> BaseException.from(RoomExceptionInformation.ROOM_RECRUIT_STRATEGY_NOT_MATCH));
+                .orElseThrow(() -> new RoomException(RoomExceptionInformation.ROOM_RECRUIT_STRATEGY_NOT_MATCH));
     }
 
     private void enterRoom(Long roomId, Member member) {

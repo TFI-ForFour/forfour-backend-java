@@ -1,6 +1,7 @@
 package com.forfour.domain.path.entity;
 
 import com.forfour.domain.path.dto.request.PathSaveDto;
+import com.forfour.domain.path.exception.PathException;
 import com.forfour.domain.path.exception.PathExceptionInformation;
 import com.forfour.global.common.entity.BaseEntity;
 import com.forfour.global.common.exception.BaseException;
@@ -44,13 +45,13 @@ public class Path extends BaseEntity {
 
     public void validateStartMarket(String uuid) {
         if (!startMarketId.equals(UUID.fromString(uuid))) {
-            throw BaseException.from(PathExceptionInformation.PATH_NOT_MATCH_START_MARKET);
+            throw new PathException(PathExceptionInformation.PATH_NOT_MATCH_START_MARKET);
         }
     }
 
     public void validateEndMarket(String uuid) {
         if (!endMarketId.equals(UUID.fromString(uuid))) {
-            throw BaseException.from(PathExceptionInformation.PATH_NOT_MATCH_END_MARKET);
+            throw new PathException(PathExceptionInformation.PATH_NOT_MATCH_END_MARKET);
         }
     }
 

@@ -29,19 +29,19 @@ public class JwtValidator {
                     .parseSignedClaims(token)
                     .getPayload();
         }catch (ExpiredJwtException e) {
-            throw BaseException.from(AuthExceptionInformation.EXPIRED_JWT);
+            throw new AuthException(AuthExceptionInformation.EXPIRED_JWT);
         } catch (UnsupportedJwtException e) {
-            throw BaseException.from(AuthExceptionInformation.UN_SUPPORTED_JWT);
+            throw new AuthException(AuthExceptionInformation.UN_SUPPORTED_JWT);
         } catch (MalformedJwtException e) {
-            throw BaseException.from(AuthExceptionInformation.MALFORMED_JWT);
+            throw new AuthException(AuthExceptionInformation.MALFORMED_JWT);
         } catch (SignatureException e) {
-            throw BaseException.from(AuthExceptionInformation.SIGNATURE_JWT);
+            throw new AuthException(AuthExceptionInformation.SIGNATURE_JWT);
         } catch (IllegalArgumentException e) {
-            throw BaseException.from(AuthExceptionInformation.ILLEGAL_ARGUMENT);
+            throw new AuthException(AuthExceptionInformation.ILLEGAL_ARGUMENT);
         } catch (WeakKeyException e) {
-            throw BaseException.from(AuthExceptionInformation.WEAK_KEY);
+            throw new AuthException(AuthExceptionInformation.WEAK_KEY);
         } catch (Exception e) {
-            throw BaseException.from(AuthExceptionInformation.CAUSE_UNKNOWN);
+            throw new AuthException(AuthExceptionInformation.CAUSE_UNKNOWN);
         }
     }
 

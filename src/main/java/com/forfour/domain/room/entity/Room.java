@@ -4,7 +4,6 @@ import com.forfour.domain.member.entity.Member;
 import com.forfour.domain.room.dto.request.RoomSaveDto;
 import com.forfour.domain.room.exception.*;
 import com.forfour.global.common.entity.BaseEntity;
-import com.forfour.global.common.exception.BaseException;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -66,11 +65,11 @@ public class Room extends BaseEntity {
 
     public void checkParticipate() {
         if (status != RoomStatus.RECRUITING) {
-            throw BaseException.from(RoomExceptionInformation.ROOM_IS_NOT_RECRUITING);
+            throw new RoomException(RoomExceptionInformation.ROOM_IS_NOT_RECRUITING);
         }
 
         if (this.memberCount == this.maxMemberCount) {
-            throw BaseException.from(RoomExceptionInformation.ROOM_IS_FULL);
+            throw new RoomException(RoomExceptionInformation.ROOM_IS_FULL);
         }
     }
 
@@ -84,7 +83,7 @@ public class Room extends BaseEntity {
 
     public void validateRoomLeader(Long memberId) {
         if(this.leader.getId() != memberId) {
-            throw BaseException.from(RoomExceptionInformation.ROOM_LEADER_NOT_EQUAL);
+            throw new RoomException(RoomExceptionInformation.ROOM_LEADER_NOT_EQUAL);
         }
     }
 
@@ -98,7 +97,7 @@ public class Room extends BaseEntity {
 
     public void validateMinimumMember() {
         if (this.memberCount < MINIMUM_MEMBER_COUNT) {
-            throw BaseException.from(RoomExceptionInformation.ROOM_NOT_ENOUGH_MINIMUM_MEMBER);
+            throw new RoomException(RoomExceptionInformation.ROOM_NOT_ENOUGH_MINIMUM_MEMBER);
         }
     }
 

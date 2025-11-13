@@ -1,6 +1,7 @@
 package com.forfour.domain.member.service;
 
 import com.forfour.domain.member.entity.Member;
+import com.forfour.domain.member.exception.MemberException;
 import com.forfour.domain.member.exception.MemberExceptionInformation;
 import com.forfour.domain.member.repository.MemberRepository;
 import com.forfour.global.common.exception.BaseException;
@@ -21,7 +22,7 @@ public class MemberGetService {
 
     public Member getMember(Long memberId) {
         return memberRepository.findById(memberId)
-                .orElseThrow(() -> BaseException.from(MemberExceptionInformation.MEMBER_NOT_FOUND));
+                .orElseThrow(() -> new MemberException(MemberExceptionInformation.MEMBER_NOT_FOUND));
     }
 
 }

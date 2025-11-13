@@ -5,6 +5,7 @@ import com.forfour.global.common.exception.BaseException;
 import com.forfour.global.jwt.JwtTokenType;
 import com.forfour.global.jwt.dto.JwtTokenClaimsDto;
 import com.forfour.global.jwt.dto.JwtTokenResponseDto;
+import com.forfour.global.jwt.exception.AuthException;
 import com.forfour.global.jwt.exception.AuthExceptionInformation;
 import com.forfour.global.jwt.utils.JwtExtractor;
 import com.forfour.global.jwt.utils.JwtProvider;
@@ -29,7 +30,7 @@ public class JwtService {
 
     public String extractJwtToken(HttpServletRequest request) {
         return jwtExtractor.extractJwtToken(request)
-                .orElseThrow(() -> BaseException.from(AuthExceptionInformation.NOT_FOUND_JWT_TOKEN));
+                .orElseThrow(() -> new AuthException(AuthExceptionInformation.NOT_FOUND_JWT_TOKEN));
     }
 
     // 유효하지 않은 경우 예외 처리 -> void 반환.

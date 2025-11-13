@@ -1,6 +1,7 @@
 package com.forfour.domain.path.service;
 
 import com.forfour.domain.path.entity.Path;
+import com.forfour.domain.path.exception.PathException;
 import com.forfour.domain.path.exception.PathExceptionInformation;
 import com.forfour.domain.path.repository.PathRepository;
 import com.forfour.global.common.exception.BaseException;
@@ -17,7 +18,7 @@ public class PathGetService {
 
     public Path getPath(Long pathId) {
         return pathRepository.findById(pathId)
-                .orElseThrow(()-> BaseException.from(PathExceptionInformation.PATH_NOT_FOUND));
+                .orElseThrow(()-> new PathException(PathExceptionInformation.PATH_NOT_FOUND));
     }
 
     public Slice<Path> getPathScrollList(Pageable pageable) {
@@ -26,7 +27,7 @@ public class PathGetService {
 
     public void validatePath(Long pathId) {
         if (!pathRepository.existsById(pathId)) {
-            throw BaseException.from(PathExceptionInformation.PATH_NOT_FOUND);
+            throw new PathException(PathExceptionInformation.PATH_NOT_FOUND);
         }
     }
 
