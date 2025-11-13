@@ -4,13 +4,19 @@ import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
 @Getter
-public abstract class BaseException extends RuntimeException {
+public class BaseException extends RuntimeException {
 
     private final HttpStatus status;
+    private final String code;
 
-    public BaseException(final HttpStatus status, final String message) {
+    private BaseException(final HttpStatus status, String code, final String message) {
         super(message);
+        this.code = code;
         this.status = status;
+    }
+
+    public static BaseException from(ExceptionInformation info) {
+        return new BaseException(info.getHttpStatus(), info.getCode(), info.getMessage());
     }
 
 }
