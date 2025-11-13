@@ -1,5 +1,7 @@
 package com.forfour.global.jwt.utils;
 
+import com.fasterxml.jackson.databind.ser.Serializers;
+import com.forfour.global.common.exception.BaseException;
 import com.forfour.global.jwt.exception.*;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
@@ -27,19 +29,19 @@ public class JwtValidator {
                     .parseSignedClaims(token)
                     .getPayload();
         }catch (ExpiredJwtException e) {
-            throw new CustomExpiredJwtException();
+            throw BaseException.from(AuthExceptionInformation.EXPIRED_JWT);
         } catch (UnsupportedJwtException e) {
-            throw new CustomUnsupportedJwtException();
+            throw BaseException.from(AuthExceptionInformation.UN_SUPPORTED_JWT);
         } catch (MalformedJwtException e) {
-            throw new CustomMalformedJwtException();
+            throw BaseException.from(AuthExceptionInformation.MALFORMED_JWT);
         } catch (SignatureException e) {
-            throw new CustomSignatureException();
+            throw BaseException.from(AuthExceptionInformation.SIGNATURE_JWT);
         } catch (IllegalArgumentException e) {
-            throw new CustomIllegalArgumentException();
+            throw BaseException.from(AuthExceptionInformation.ILLEGAL_ARGUMENT);
         } catch (WeakKeyException e) {
-            throw new CustomWeakKeyException();
+            throw BaseException.from(AuthExceptionInformation.WEAK_KEY);
         } catch (Exception e) {
-            throw new CustomJwtUnknownException();
+            throw BaseException.from(AuthExceptionInformation.CAUSE_UNKNOWN);
         }
     }
 
