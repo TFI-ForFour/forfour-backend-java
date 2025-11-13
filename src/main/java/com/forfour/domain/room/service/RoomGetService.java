@@ -2,6 +2,7 @@ package com.forfour.domain.room.service;
 
 import com.forfour.domain.room.entity.Room;
 import com.forfour.domain.room.entity.RoomStatus;
+import com.forfour.domain.room.exception.RoomException;
 import com.forfour.domain.room.exception.RoomExceptionInformation;
 import com.forfour.domain.room.repository.RoomRepository;
 import com.forfour.global.common.exception.BaseException;
@@ -20,12 +21,12 @@ public class RoomGetService {
 
     public Room getRoom(Long roomId) {
         return roomRepository.findById(roomId)
-                .orElseThrow(() -> BaseException.from(RoomExceptionInformation.ROOM_NOT_FOUND));
+                .orElseThrow(() -> new RoomException(RoomExceptionInformation.ROOM_NOT_FOUND));
     }
 
     public Room getRoomUsingLock(Long roomId) {
         return roomRepository.findByIdWithPessimisticLock(roomId)
-                .orElseThrow(() -> BaseException.from(RoomExceptionInformation.ROOM_NOT_FOUND));
+                .orElseThrow(() -> new RoomException(RoomExceptionInformation.ROOM_NOT_FOUND));
     }
 
     public Slice<Room> getActiveRooms(Pageable pageable) {

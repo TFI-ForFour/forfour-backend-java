@@ -1,6 +1,7 @@
 package com.forfour.domain.market.service;
 
 import com.forfour.domain.market.entity.Market;
+import com.forfour.domain.market.exception.MarketException;
 import com.forfour.domain.market.exception.MarketExceptionInformation;
 import com.forfour.domain.market.repository.MarketRepository;
 import com.forfour.global.common.exception.BaseException;
@@ -17,13 +18,13 @@ public class MarketGetService {
 
     public void validateMarket(String marketId) {
         if (!marketRepository.existsById(UUID.fromString(marketId))) {
-            throw BaseException.from(MarketExceptionInformation.MARKET_NOT_FOUND);
+            throw new MarketException(MarketExceptionInformation.MARKET_NOT_FOUND);
         }
     }
 
     public Market getMarket(String marketId) {
         return marketRepository.findById(UUID.fromString(marketId))
-                .orElseThrow(() -> BaseException.from(MarketExceptionInformation.MARKET_NOT_FOUND));
+                .orElseThrow(() -> new MarketException(MarketExceptionInformation.MARKET_NOT_FOUND));
     }
 
 }

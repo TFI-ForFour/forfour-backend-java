@@ -6,6 +6,7 @@ import com.forfour.global.auth.context.MemberContext;
 import com.forfour.global.auth.guards.Authorizable;
 import com.forfour.global.common.exception.BaseException;
 import com.forfour.global.jwt.dto.JwtTokenClaimsDto;
+import com.forfour.global.jwt.exception.AuthException;
 import com.forfour.global.jwt.exception.AuthExceptionInformation;
 import com.forfour.global.jwt.service.JwtService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -56,7 +57,7 @@ public class AuthGuardAspect {
                 .anyMatch(guard -> guard.isAuthorized(tokenRole));
 
         if (!isAuthorized) {
-            throw BaseException.from(AuthExceptionInformation.UN_AUTHORIZED);
+            throw new AuthException(AuthExceptionInformation.UN_AUTHORIZED);
         }
     }
 
