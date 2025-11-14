@@ -52,4 +52,10 @@ public interface RoomSwagger {
             @PathVariable String marketId
     );
 
+    @Operation(description = "산책 종료 API", summary = "산책 종료 API")
+    ApiResponse<Void> endWalking(
+            @PathVariable Long roomId,
+            @PathVariable String marketId
+    );
+
 }
