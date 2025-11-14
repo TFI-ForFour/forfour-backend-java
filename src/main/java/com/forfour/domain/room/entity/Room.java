@@ -13,6 +13,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 
 @Entity
@@ -92,6 +93,14 @@ public class Room extends BaseEntity {
 
     public boolean checkStatus(RoomStatus status) {
         return this.status == status;
+    }
+
+    public void endStopWatch() {
+        this.stopwatchEndAt = LocalDateTime.now();
+    }
+
+    public Duration getDuration() {
+        return Duration.between(stopwatchStartAt, stopwatchEndAt);
     }
 
     public void updateStatus(RoomStatus status) {

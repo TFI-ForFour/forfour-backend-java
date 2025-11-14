@@ -27,6 +27,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Duration;
 import java.util.List;
 import java.util.Objects;
 
@@ -98,13 +99,29 @@ public class RoomFacade {
         room.validateRoomLeader(MemberContext.getMemberId());
         path.validateStartMarket(marketId);
 
-        updateParticipantStatus(roomId);
+        updateParticipantStatus(roomId, RoomStatus.PROGRESS);
         room.updateStatus(RoomStatus.PROGRESS);
     }
 
-    private void updateParticipantStatus(Long roomId) {
+    public void endWalking(Long roomId, String marketId) {
+        Room room = roomGetService.getRoomUsingLock(roomId);
+        Path path = pathGetService.getPath(room.getPathId());
+        room.validateRoomLeader(MemberContext.getMemberId());
+        path.validateEndMarket(marketId);
+
+        updateParticipantStatus(roomId, RoomStatus.COMPLETED);
+        room.endStopWatch();
+        room.updateStatus(RoomStatus.COMPLETED);
+//        Duration duration = room.getDuration();
+    }
+
+    /*
+    * refactor
+    * */
+
+    private void updateParticipantStatus(Long roomId, RoomStatus status) {
         participantGetService.getParticipants(roomId)
-                .forEach(p -> p.updateStatus(RoomStatus.PROGRESS));
+                .forEach(p -> p.updateStatus(status));
     }
 
     private RecruitStatusStrategy findRecruitStrategy(RoomStatus status) {
