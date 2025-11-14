@@ -6,14 +6,15 @@ import org.springframework.http.HttpStatus;
 
 @Builder(access = AccessLevel.PRIVATE)
 public record ApiResponse<T>(
-        int code,
+        int status,
+        String code,
         String message,
         T data
 ) {
 
     public static <T> ApiResponse<T> response(HttpStatus httpStatus, String message, T data) {
         return ApiResponse.<T>builder()
-                .code(httpStatus.value())
+                .status(httpStatus.value())
                 .message(message)
                 .data(data)
                 .build();
@@ -21,8 +22,17 @@ public record ApiResponse<T>(
 
     public static <T> ApiResponse<T> response(HttpStatus httpStatus, String message) {
         return ApiResponse.<T>builder()
-                .code(httpStatus.value())
+                .status(httpStatus.value())
                 .message(message)
+                .build();
+    }
+
+    public static <T> ApiResponse<T> response(HttpStatus httpStatus, String code, String message, T data) {
+        return ApiResponse.<T>builder()
+                .status(httpStatus.value())
+                .code(code)
+                .message(message)
+                .data(data)
                 .build();
     }
 

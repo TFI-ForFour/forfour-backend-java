@@ -1,8 +1,10 @@
 package com.forfour.domain.market.service;
 
 import com.forfour.domain.market.entity.Market;
-import com.forfour.domain.market.exception.MarketNotFoundException;
+import com.forfour.domain.market.exception.MarketException;
+import com.forfour.domain.market.exception.MarketExceptionInformation;
 import com.forfour.domain.market.repository.MarketRepository;
+import com.forfour.global.common.exception.BaseException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,13 +18,13 @@ public class MarketGetService {
 
     public void validateMarket(String marketId) {
         if (!marketRepository.existsById(UUID.fromString(marketId))) {
-            throw new MarketNotFoundException();
+            throw new MarketException(MarketExceptionInformation.MARKET_NOT_FOUND);
         }
     }
 
     public Market getMarket(String marketId) {
         return marketRepository.findById(UUID.fromString(marketId))
-                .orElseThrow(MarketNotFoundException::new);
+                .orElseThrow(() -> new MarketException(MarketExceptionInformation.MARKET_NOT_FOUND));
     }
 
 }

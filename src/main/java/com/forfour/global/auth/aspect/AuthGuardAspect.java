@@ -4,8 +4,10 @@ import com.forfour.domain.member.entity.Role;
 import com.forfour.global.auth.annotations.AuthGuard;
 import com.forfour.global.auth.context.MemberContext;
 import com.forfour.global.auth.guards.Authorizable;
+import com.forfour.global.common.exception.BaseException;
 import com.forfour.global.jwt.dto.JwtTokenClaimsDto;
-import com.forfour.global.jwt.exception.AuthorizationException;
+import com.forfour.global.jwt.exception.AuthException;
+import com.forfour.global.jwt.exception.AuthExceptionInformation;
 import com.forfour.global.jwt.service.JwtService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -55,7 +57,7 @@ public class AuthGuardAspect {
                 .anyMatch(guard -> guard.isAuthorized(tokenRole));
 
         if (!isAuthorized) {
-            throw new AuthorizationException();
+            throw new AuthException(AuthExceptionInformation.UN_AUTHORIZED);
         }
     }
 

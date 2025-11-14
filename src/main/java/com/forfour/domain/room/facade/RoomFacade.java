@@ -13,12 +13,13 @@ import com.forfour.domain.room.dto.response.RoomWithParticipantsDto;
 import com.forfour.domain.room.dto.response.SliceRoomDto;
 import com.forfour.domain.room.entity.Room;
 import com.forfour.domain.room.entity.RoomStatus;
-import com.forfour.domain.room.exception.RecruitStrategyNotMatchException;
-import com.forfour.domain.room.exception.RoomLeaderNotEqualException;
+import com.forfour.domain.room.exception.RoomException;
+import com.forfour.domain.room.exception.RoomExceptionInformation;
 import com.forfour.domain.room.service.RoomGetService;
 import com.forfour.domain.room.service.RoomSaveService;
 import com.forfour.domain.room.strategy.RecruitStatusStrategy;
 import com.forfour.global.auth.context.MemberContext;
+import com.forfour.global.common.exception.BaseException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -128,7 +129,7 @@ public class RoomFacade {
         return strategies.stream()
                 .filter(strategy -> strategy.support(status))
                 .findFirst()
-                .orElseThrow(RecruitStrategyNotMatchException::new);
+                .orElseThrow(() -> new RoomException(RoomExceptionInformation.ROOM_RECRUIT_STRATEGY_NOT_MATCH));
     }
 
     private void enterRoom(Long roomId, Member member) {
