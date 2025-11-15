@@ -13,6 +13,7 @@ import com.forfour.domain.room.dto.response.RoomWithParticipantsDto;
 import com.forfour.domain.room.dto.response.SliceRoomDto;
 import com.forfour.domain.room.entity.Room;
 import com.forfour.domain.room.entity.RoomStatus;
+import com.forfour.domain.room.event.RoomStartEvent;
 import com.forfour.domain.room.exception.RoomException;
 import com.forfour.domain.room.exception.RoomExceptionInformation;
 import com.forfour.domain.room.service.RoomGetService;
@@ -21,15 +22,18 @@ import com.forfour.domain.room.strategy.RecruitStatusStrategy;
 import com.forfour.global.auth.context.MemberContext;
 import com.forfour.global.common.exception.BaseException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 @Service
@@ -43,6 +47,7 @@ public class RoomFacade {
     private final PathGetService pathGetService;
     private final MemberGetService memberGetService;
     private final List<RecruitStatusStrategy> strategies;
+    private final ApplicationEventPublisher eventPublisher;
 
     @Transactional
     public RoomDetailDto createRoom(RoomSaveDto dto) {
@@ -100,17 +105,18 @@ public class RoomFacade {
         room.validateRoomLeader(MemberContext.getMemberId());
         path.validateStartMarket(marketId);
 
-        updateParticipantStatus(roomId, RoomStatus.PROGRESS);
+        eventPublisher.publishEvent(RoomStartEvent.of(roomId, RoomStatus.PROGRESS));
         room.updateStatus(RoomStatus.PROGRESS);
     }
 
+    @Transactional
     public void endWalking(Long roomId, String marketId) {
         Room room = roomGetService.getRoomUsingLock(roomId);
         Path path = pathGetService.getPath(room.getPathId());
         room.validateRoomLeader(MemberContext.getMemberId());
         path.validateEndMarket(marketId);
 
-        updateParticipantStatus(roomId, RoomStatus.COMPLETED);
+        eventPublisher.publishEvent(RoomStartEvent.of(roomId, RoomStatus.COMPLETED));
         room.endStopWatch();
         room.updateStatus(RoomStatus.COMPLETED);
 //        Duration duration = room.getDuration();
