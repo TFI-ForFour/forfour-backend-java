@@ -1,5 +1,6 @@
 package com.forfour.domain.path.facade;
 
+import com.forfour.domain.market.entity.Market;
 import com.forfour.domain.market.service.MarketGetService;
 import com.forfour.domain.path.dto.request.PathSaveDto;
 import com.forfour.domain.path.dto.response.PathDetailDto;
@@ -22,10 +23,10 @@ public class PathFacade {
     private final MarketGetService marketGetService;
 
     public PathDetailDto save(PathSaveDto dto) {
-        marketGetService.validateMarket(dto.startMarketId());
-        marketGetService.validateMarket(dto.endMarketId());
+        Market startMarket = marketGetService.getMarketById(dto.startMarketId());
+        Market endMarket = marketGetService.getMarketById(dto.endMarketId());
 
-        Path saved = pathSaveService.save(dto);
+        Path saved = pathSaveService.save(dto, startMarket, endMarket);
         return PathDetailDto.from(saved);
     }
 

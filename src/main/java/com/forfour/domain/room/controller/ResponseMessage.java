@@ -11,6 +11,7 @@ public enum ResponseMessage {
     ROOM_PARTICIPANT("[산책 방]에 참여했습니다."),
     ROOM_SCROLL_LIST_READ("[산책 방]에 목록을 조회합니다."),
     ROOM_READ("[산책 방 + 참여자 정보]를 조회합니다."),
+    ROOM_MY_READ("내가 참여한 [산책 방 + 참여자 정보]를 조회합니다."),
     ROOM_RECRUIT_STATUS_UPDATED("[산책방 모집 상태]를 변경합니다."),
     WALKING_START("[산책]을 시작합니다."),
     WALKING_END("[산책]을 종료합니다."),
