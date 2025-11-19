@@ -1,5 +1,6 @@
 package com.forfour.domain.path.entity;
 
+import com.forfour.domain.market.entity.Market;
 import com.forfour.domain.path.dto.request.PathSaveDto;
 import com.forfour.domain.path.exception.PathException;
 import com.forfour.domain.path.exception.PathExceptionInformation;
@@ -27,6 +28,10 @@ public class Path extends BaseEntity {
 
     private double distance;
 
+    private String startMarketName;
+
+    private String endMarketName;
+
     private UUID startMarketId;
 
     private UUID endMarketId;
@@ -37,6 +42,18 @@ public class Path extends BaseEntity {
         return Path.builder()
                 .pathName(dto.pathName())
                 .distance(dto.distance())
+                .startMarketId(UUID.fromString(dto.startMarketId()))
+                .endMarketId(UUID.fromString(dto.endMarketId()))
+                .pathImageUrl(dto.pathImageUrl())
+                .build();
+    }
+
+    public static Path of(PathSaveDto dto, Market startMarket, Market endMarket) {
+        return Path.builder()
+                .pathName(dto.pathName())
+                .distance(dto.distance())
+                .startMarketName(startMarket.getMarketName())
+                .endMarketName(endMarket.getMarketName())
                 .startMarketId(UUID.fromString(dto.startMarketId()))
                 .endMarketId(UUID.fromString(dto.endMarketId()))
                 .pathImageUrl(dto.pathImageUrl())

@@ -54,6 +54,16 @@ public class RoomController implements RoomSwagger{
     }
 
     @AuthGuard({MemberGuard.class, AdminGuard.class})
+    @GetMapping("/v1/my-room")
+    public ApiResponse<SliceRoomDto> readMyRoom(
+            @RequestParam int pageSize,
+            @RequestParam int pageNum
+    ) {
+        SliceRoomDto response = facade.readMyRoom(pageSize, pageNum);
+        return ApiResponse.response(HttpStatus.OK, ROOM_MY_READ.getMeesage() , response);
+    }
+
+    @AuthGuard({MemberGuard.class, AdminGuard.class})
     @GetMapping("/v1/room-list")
     public ApiResponse<SliceRoomDto> scrollRoom(
             @RequestParam int pageSize,

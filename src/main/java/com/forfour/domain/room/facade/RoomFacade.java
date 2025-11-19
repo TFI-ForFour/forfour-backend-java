@@ -54,10 +54,11 @@ public class RoomFacade {
     @Transactional
     public RoomDetailDto createRoom(RoomSaveDto dto) {
         pathGetService.validatePath(dto.pathId());
+        Path path = pathGetService.getPath(dto.pathId());
 
         Member leader = memberGetService.getMember(MemberContext.getMemberId());
-        Room savedRoom = roomSaveService.save(dto, leader);
-        enterRoom(savedRoom.getId(), leader);
+        Room savedRoom = roomSaveService.save(dto, leader, path);
+        enterRoom(savedRoom, leader);
 
         return RoomDetailDto.of(savedRoom, leader);
     }
@@ -68,7 +69,7 @@ public class RoomFacade {
         room.checkParticipate();
 
         Member participant = memberGetService.getMember(MemberContext.getMemberId());
-        enterRoom(room.getId(), participant);
+        enterRoom(room, participant);
         room.increaseMemberCount();
     }
 
@@ -88,6 +89,16 @@ public class RoomFacade {
 
         Slice<Room> slice = roomGetService.getActiveRoomsWithStatus(RoomStatus.valueOf(roomStatus), pageable);
         return SliceRoomDto.from(slice);
+    }
+
+    public SliceRoomDto readMyRoom(int pageSize, int pageNum) {
+        Pageable pageable = PageRequest.of(pageNum, pageSize);
+
+        Long memberId = MemberContext.getMemberId();
+        Slice<Room> myParticipatingRoom = participantGetService.findMyParticipatingRoom(memberId, pageable)
+                .map(Participant::getRoom);
+
+        return SliceRoomDto.from(myParticipatingRoom);
     }
 
     @Transactional
@@ -139,8 +150,8 @@ public class RoomFacade {
                 .orElseThrow(() -> new RoomException(RoomExceptionInformation.ROOM_RECRUIT_STRATEGY_NOT_MATCH));
     }
 
-    private void enterRoom(Long roomId, Member member) {
-        participantSaveService.save(roomId, member);
+    private void enterRoom(Room room, Member member) {
+        participantSaveService.save(room, member);
     }
 
     private void startRoom(Room room) {

@@ -48,11 +48,11 @@ public class ParticipantFacade {
     public MyParticipationDto checkMyParticipation() {
         Long memberId = MemberContext.getMemberId();
         Participant myProgressParticipation = participantGetService.findMyProgressParticipation(memberId);
-        if(myProgressParticipation == null) {
+        if (myProgressParticipation == null) {
             return MyParticipationDto.from(false, null);
         }
 
-        return MyParticipationDto.from(true, myProgressParticipation.getRoomId());
+        return MyParticipationDto.from(true, myProgressParticipation.getRoom());
     }
 
 }

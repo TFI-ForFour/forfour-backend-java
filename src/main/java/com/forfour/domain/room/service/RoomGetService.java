@@ -1,5 +1,6 @@
 package com.forfour.domain.room.service;
 
+import com.forfour.domain.member.entity.Member;
 import com.forfour.domain.room.entity.Room;
 import com.forfour.domain.room.entity.RoomStatus;
 import com.forfour.domain.room.exception.RoomException;
@@ -11,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -35,6 +37,14 @@ public class RoomGetService {
 
     public Slice<Room> getActiveRoomsWithStatus(RoomStatus status, Pageable pageable) {
         return roomRepository.findActiveRoomsWithStatus(status, pageable);
+    }
+
+    public List<Room> findByLeader(Member leader) {
+        return roomRepository.findByLeader(leader);
+    }
+
+    public List<Room> findByLeaderAndStatusNot(Member leader) {
+        return roomRepository.findByLeaderAndStatusNot(leader, RoomStatus.COMPLETED);
     }
 
 }

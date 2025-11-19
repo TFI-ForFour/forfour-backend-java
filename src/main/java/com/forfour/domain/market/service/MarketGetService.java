@@ -16,6 +16,11 @@ public class MarketGetService {
 
     private final MarketRepository marketRepository;
 
+    public Market getMarketById(String uuid) {
+        return marketRepository.findById(UUID.fromString(uuid))
+                .orElseThrow(() -> new MarketException(MarketExceptionInformation.MARKET_NOT_FOUND));
+    }
+
     public void validateMarket(String marketId) {
         if (!marketRepository.existsById(UUID.fromString(marketId))) {
             throw new MarketException(MarketExceptionInformation.MARKET_NOT_FOUND);

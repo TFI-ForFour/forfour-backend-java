@@ -15,10 +15,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Nullable;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "산책 방")
 public interface RoomSwagger {
@@ -31,6 +28,9 @@ public interface RoomSwagger {
 
     @Operation(description = "[산책 방 + 참여자 정보] 조회 API", summary = "[산책 방 + 참여자 정보] 조회 API")
     ApiResponse<RoomWithParticipantsDto> readRoom(@PathVariable Long roomId);
+
+    @Operation(description = "내가 참여한 산책방 정보 조회 API", summary = "내가 참여한 산책방 정보 조회 API")
+    ApiResponse<SliceRoomDto> readMyRoom(@RequestParam int pageSize, @RequestParam int pageNum);
 
     @Operation(description = "산책 방 목록 조회 API", summary = "산책 방 목록 조회 API")
     ApiResponse<SliceRoomDto> scrollRoom(

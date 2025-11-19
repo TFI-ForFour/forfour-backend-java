@@ -14,6 +14,8 @@ public record RoomDetailDto(
         Long leaderId,
         String leaderName,
         Long pathId,
+        String startMarketName,
+        String endMarketName,
         String missionName,
         int maxMemberCount,
         int memberCount,
@@ -27,6 +29,8 @@ public record RoomDetailDto(
                 .leaderId(leader.getId())
                 .leaderName(leader.getNickname())
                 .pathId(room.getPathId())
+                .startMarketName(room.getStartMarketName())
+                .endMarketName(room.getEndMarketName())
                 .missionName(room.getMission().name())
                 .maxMemberCount(room.getMaxMemberCount())
                 .memberCount(room.getMemberCount())
@@ -42,7 +46,11 @@ public record RoomDetailDto(
                 .leaderId(room.getLeader().getId())
                 .leaderName(room.getLeader().getNickname())
                 .pathId(room.getPathId())
+                .startMarketName(room.getStartMarketName())
+                .endMarketName(room.getEndMarketName())
                 .missionName(room.getMission().name())
+                .maxMemberCount(room.getMaxMemberCount())
+                .memberCount(room.getMemberCount())
                 .status(room.getStatus())
                 .startAt(room.getStartAt())
                 .build();

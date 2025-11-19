@@ -1,6 +1,7 @@
 package com.forfour.domain.participant.entity;
 
 import com.forfour.domain.member.entity.Member;
+import com.forfour.domain.room.entity.Room;
 import com.forfour.domain.room.entity.RoomStatus;
 import com.forfour.global.common.entity.BaseEntity;
 import jakarta.persistence.*;
@@ -25,7 +26,9 @@ public class Participant extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long roomId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "room_id")
+    private Room room;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "memberId", referencedColumnName = "id")
@@ -34,9 +37,9 @@ public class Participant extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private RoomStatus roomStatus;
 
-    public static Participant of(Long roomId, Member member) {
+    public static Participant of(Room room, Member member) {
         return Participant.builder()
-                .roomId(roomId)
+                .room(room)
                 .member(member)
                 .roomStatus(RoomStatus.RECRUITING)
                 .build();

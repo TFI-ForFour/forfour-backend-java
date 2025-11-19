@@ -1,5 +1,6 @@
 package com.forfour.domain.room.repository;
 
+import com.forfour.domain.member.entity.Member;
 import com.forfour.domain.room.entity.Room;
 import com.forfour.domain.room.entity.RoomStatus;
 import jakarta.persistence.LockModeType;
@@ -11,6 +12,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -34,5 +36,8 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
             Pageable pageable
     );
 
+    List<Room> findByLeader(Member leader);
+
+    List<Room> findByLeaderAndStatusNot(Member leader, RoomStatus status);
 
 }
