@@ -14,11 +14,11 @@ public record MemberDetailDto(
 ) {
     public static MemberDetailDto from(Member member) {
         return MemberDetailDto.builder()
-                .id(id)
-                .nickname(nickname)
-                .role(role)
-                .totalWalkCount(totalWalkCount)
-                .totalDistance(totalDistance)
+                .id(member.getId())
+                .nickname(member.getNickname())
+                .role(member.getRole())
+                .totalWalkCount(member.getTotalWalkCount())
+                .totalDistance(member.getTotalDistance())
                 .build();
     }
 }
