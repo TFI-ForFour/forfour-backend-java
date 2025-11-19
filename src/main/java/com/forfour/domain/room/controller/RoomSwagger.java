@@ -2,6 +2,7 @@ package com.forfour.domain.room.controller;
 
 import com.forfour.domain.room.dto.request.RoomSaveDto;
 import com.forfour.domain.room.dto.response.RoomDetailDto;
+import com.forfour.domain.room.dto.response.RoomEndDto;
 import com.forfour.domain.room.dto.response.RoomWithParticipantsDto;
 import com.forfour.domain.room.dto.response.SliceRoomDto;
 import com.forfour.domain.room.entity.RoomStatus;
@@ -53,7 +54,7 @@ public interface RoomSwagger {
     );
 
     @Operation(description = "산책 종료 API", summary = "산책 종료 API")
-    ApiResponse<Void> endWalking(
+    ApiResponse<RoomEndDto> endWalking(
             @PathVariable Long roomId,
             @PathVariable String marketId
     );
