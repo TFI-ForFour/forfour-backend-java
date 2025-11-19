@@ -1,6 +1,7 @@
 package com.forfour.domain.room.entity;
 
 import com.forfour.domain.member.entity.Member;
+import com.forfour.domain.path.entity.Path;
 import com.forfour.domain.room.dto.request.RoomSaveDto;
 import com.forfour.domain.room.exception.*;
 import com.forfour.global.common.entity.BaseEntity;
@@ -31,7 +32,13 @@ public class Room extends BaseEntity {
     @JoinColumn(name = "leaderId", referencedColumnName = "id")
     private Member leader;
 
+    private String leaderName;
+
     private Long pathId;
+
+    private String startMarketName;
+
+    private String endMarketName;
 
     private Mission mission;
 
@@ -50,11 +57,14 @@ public class Room extends BaseEntity {
 
     private LocalDateTime stopwatchEndAt;
 
-    public static Room of(RoomSaveDto dto, Member leader) {
+    public static Room of(RoomSaveDto dto, Member leader, Path path) {
         return Room.builder()
                 .title(dto.title())
                 .leader(leader)
+                .leaderName(leader.getNickname())
                 .pathId(dto.pathId())
+                .startMarketName(path.getStartMarketName())
+                .endMarketName(path.getEndMarketName())
                 .mission(Mission.value(dto.missionName()))
                 .maxMemberCount(dto.maxMemberCount())
                 .memberCount(1)
