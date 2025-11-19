@@ -118,6 +118,10 @@ public class Room extends BaseEntity {
         this.status = status;
     }
 
+    public void updateLeaderName(String leaderName) {
+        this.leaderName = leaderName;
+    }
+
     public void validateMinimumMember() {
         if (this.memberCount < MINIMUM_MEMBER_COUNT) {
             throw new RoomException(RoomExceptionInformation.ROOM_NOT_ENOUGH_MINIMUM_MEMBER);

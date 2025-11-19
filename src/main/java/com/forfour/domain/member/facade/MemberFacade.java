@@ -7,6 +7,8 @@ import com.forfour.domain.member.entity.Member;
 import com.forfour.domain.member.service.MemberGetService;
 import com.forfour.domain.member.service.MemberSaveService;
 import com.forfour.domain.participant.service.ParticipantGetService;
+import com.forfour.domain.room.entity.Room;
+import com.forfour.domain.room.service.RoomGetService;
 import com.forfour.global.auth.context.MemberContext;
 import com.forfour.global.auth.service.KakaoService;
 import com.forfour.global.jwt.dto.JwtTokenResponseDto;
@@ -15,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -25,6 +28,7 @@ public class MemberFacade {
     private final JwtService jwtService;
     private final MemberGetService memberGetService;
     private final MemberSaveService memberSaveService;
+    private final RoomGetService roomGetService;
     private final ParticipantGetService participantGetService;
 
     public MemberEnterDto kakaoLogin(String authCode) {
@@ -47,7 +51,14 @@ public class MemberFacade {
     @Transactional
     public MemberDetailDto updateNickname(NickNameUpdateDto dto) {
         Member member = memberGetService.getMember(MemberContext.getMemberId());
-        member.updateNickname(dto.nickname());
+        String newName = dto.nickname();
+        member.updateNickname(newName);
+
+        List<Room> rooms = roomGetService.findByLeaderAndStatusNot(member);
+        for (Room room : rooms) {
+            room.updateLeaderName(newName);
+        }
+
         return MemberDetailDto.from(member);
     }
 
