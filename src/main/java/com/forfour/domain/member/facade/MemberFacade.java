@@ -1,14 +1,19 @@
 package com.forfour.domain.member.facade;
 
+import com.forfour.domain.member.dto.request.NickNameUpdateDto;
+import com.forfour.domain.member.dto.response.MemberDetailDto;
 import com.forfour.domain.member.dto.response.MemberEnterDto;
 import com.forfour.domain.member.entity.Member;
 import com.forfour.domain.member.service.MemberGetService;
 import com.forfour.domain.member.service.MemberSaveService;
+import com.forfour.domain.participant.service.ParticipantGetService;
+import com.forfour.global.auth.context.MemberContext;
 import com.forfour.global.auth.service.KakaoService;
 import com.forfour.global.jwt.dto.JwtTokenResponseDto;
 import com.forfour.global.jwt.service.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -20,6 +25,7 @@ public class MemberFacade {
     private final JwtService jwtService;
     private final MemberGetService memberGetService;
     private final MemberSaveService memberSaveService;
+    private final ParticipantGetService participantGetService;
 
     public MemberEnterDto kakaoLogin(String authCode) {
         Long kakaoId = kakaoService.kakaoLogin(authCode);
@@ -30,6 +36,19 @@ public class MemberFacade {
         }
 
         return loginMember(findMember.get());
+    }
+
+    public MemberDetailDto readMemberInformation() {
+        Long memberId = MemberContext.getMemberId();
+        Member member = memberGetService.getMember(memberId);
+        return MemberDetailDto.from(member);
+    }
+
+    @Transactional
+    public MemberDetailDto updateNickname(NickNameUpdateDto dto) {
+        Member member = memberGetService.getMember(MemberContext.getMemberId());
+        member.updateNickname(dto.nickname());
+        return MemberDetailDto.from(member);
     }
 
     private MemberEnterDto registerNewMember(Long kakaoId) {
