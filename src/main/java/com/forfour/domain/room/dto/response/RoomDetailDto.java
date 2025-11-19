@@ -49,6 +49,8 @@ public record RoomDetailDto(
                 .startMarketName(room.getStartMarketName())
                 .endMarketName(room.getEndMarketName())
                 .missionName(room.getMission().name())
+                .maxMemberCount(room.getMaxMemberCount())
+                .memberCount(room.getMemberCount())
                 .status(room.getStatus())
                 .startAt(room.getStartAt())
                 .build();
