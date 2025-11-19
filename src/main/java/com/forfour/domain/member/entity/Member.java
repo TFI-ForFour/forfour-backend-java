@@ -40,7 +40,7 @@ public class Member extends BaseEntity {
     }
 
     public void updateNickname(String nickname) {
-        this.nickname = nickname;
+        this.nickname = nickname.trim();
     }
 
     public void updateWalkData(double distance) {
