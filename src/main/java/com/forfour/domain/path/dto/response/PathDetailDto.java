@@ -8,6 +8,8 @@ public record PathDetailDto(
         Long pathId,
         String pathName,
         double distance,
+        String startMarketName,
+        String endMarketName,
         String startMarketId,
         String endMarketId,
         String pathImageUrl
@@ -17,6 +19,8 @@ public record PathDetailDto(
                 .pathId(path.getId())
                 .pathName(path.getPathName())
                 .distance(path.getDistance())
+                .startMarketName(path.getStartMarketName())
+                .endMarketName(path.getEndMarketName())
                 .startMarketId(path.getStartMarketId().toString())
                 .endMarketId(path.getEndMarketId().toString())
                 .pathImageUrl(path.getPathImageUrl())
