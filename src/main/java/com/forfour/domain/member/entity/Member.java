@@ -39,6 +39,10 @@ public class Member extends BaseEntity {
                 .build();
     }
 
+    public void updateNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
     public void updateWalkData(double distance) {
         this.totalWalkCount++;
         this.totalDistance += distance;

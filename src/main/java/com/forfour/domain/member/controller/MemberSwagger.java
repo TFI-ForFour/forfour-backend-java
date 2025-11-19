@@ -1,6 +1,7 @@
 package com.forfour.domain.member.controller;
 
 import com.forfour.domain.member.dto.request.MemberLoginDto;
+import com.forfour.domain.member.dto.request.NickNameUpdateDto;
 import com.forfour.domain.member.dto.response.MemberDetailDto;
 import com.forfour.domain.member.dto.response.MemberEnterDto;
 import com.forfour.global.common.response.ApiResponse;
@@ -16,4 +17,7 @@ public interface MemberSwagger {
 
     @Operation(description = "회원 정보 조회", summary = "회원 정보 조회")
     ApiResponse<MemberDetailDto> readMemberInformation();
+
+    @Operation(description = "닉네임 수정", summary = "닉네임 수정")
+    ApiResponse<MemberDetailDto> updateNickName(@RequestBody NickNameUpdateDto dto);
 }

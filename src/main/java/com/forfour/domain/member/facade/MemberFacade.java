@@ -1,5 +1,6 @@
 package com.forfour.domain.member.facade;
 
+import com.forfour.domain.member.dto.request.NickNameUpdateDto;
 import com.forfour.domain.member.dto.response.MemberDetailDto;
 import com.forfour.domain.member.dto.response.MemberEnterDto;
 import com.forfour.domain.member.entity.Member;
@@ -11,6 +12,7 @@ import com.forfour.global.jwt.dto.JwtTokenResponseDto;
 import com.forfour.global.jwt.service.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -39,6 +41,12 @@ public class MemberFacade {
         return MemberDetailDto.from(member);
     }
 
+    @Transactional
+    public MemberDetailDto updateNickname(NickNameUpdateDto dto) {
+        Member member = memberGetService.getMember(MemberContext.getMemberId());
+        member.updateNickname(dto.nickname());
+        return MemberDetailDto.from(member);
+    }
 
     private MemberEnterDto registerNewMember(Long kakaoId) {
         Member savedMember = memberSaveService.join(kakaoId);

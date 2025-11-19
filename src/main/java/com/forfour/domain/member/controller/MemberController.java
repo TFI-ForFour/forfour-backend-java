@@ -1,6 +1,7 @@
 package com.forfour.domain.member.controller;
 
 import com.forfour.domain.member.dto.request.MemberLoginDto;
+import com.forfour.domain.member.dto.request.NickNameUpdateDto;
 import com.forfour.domain.member.dto.response.MemberDetailDto;
 import com.forfour.domain.member.dto.response.MemberEnterDto;
 import com.forfour.domain.member.facade.MemberFacade;
@@ -37,6 +38,15 @@ public class MemberController implements MemberSwagger{
     public ApiResponse<MemberDetailDto> readMemberInformation() {
         MemberDetailDto response = memberFacade.readMemberInformation();
         return ApiResponse.response(HttpStatus.OK, MEMBER_READ_SUCCESS.getMessage(), response);
+    }
+
+    @AuthGuard({MemberGuard.class, AdminGuard.class})
+    @PatchMapping("/v1/member")
+    public ApiResponse<MemberDetailDto> updateNickName(
+            @RequestBody NickNameUpdateDto dto
+    ) {
+        MemberDetailDto response = memberFacade.updateNickname(dto);
+        return ApiResponse.response(HttpStatus.OK, NICKNAME_UPDATE_SUCCESS.getMessage(), response);
     }
 
 }
