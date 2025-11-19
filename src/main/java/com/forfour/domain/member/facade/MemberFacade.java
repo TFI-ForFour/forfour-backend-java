@@ -1,9 +1,11 @@
 package com.forfour.domain.member.facade;
 
+import com.forfour.domain.member.dto.response.MemberDetailDto;
 import com.forfour.domain.member.dto.response.MemberEnterDto;
 import com.forfour.domain.member.entity.Member;
 import com.forfour.domain.member.service.MemberGetService;
 import com.forfour.domain.member.service.MemberSaveService;
+import com.forfour.global.auth.context.MemberContext;
 import com.forfour.global.auth.service.KakaoService;
 import com.forfour.global.jwt.dto.JwtTokenResponseDto;
 import com.forfour.global.jwt.service.JwtService;
@@ -31,6 +33,12 @@ public class MemberFacade {
 
         return loginMember(findMember.get());
     }
+
+    public MemberDetailDto readMemberInformation() {
+        Member member = memberGetService.getMember(MemberContext.getMemberId());
+        return MemberDetailDto.from(member);
+    }
+
 
     private MemberEnterDto registerNewMember(Long kakaoId) {
         Member savedMember = memberSaveService.join(kakaoId);

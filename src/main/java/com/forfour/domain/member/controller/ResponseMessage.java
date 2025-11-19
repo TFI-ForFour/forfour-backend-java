@@ -9,6 +9,7 @@ public enum ResponseMessage {
 
     MEMBER_REGISTER_SUCCESS("성공적으로 회원가입 했습니다."),
     MEMBER_LOGIN_SUCCESS("성공적으로 로그인 했습니다."),
+    MEMBER_READ_SUCCESS("회원 정보를 조회합니다."),
     ;
 
     private final String message;
