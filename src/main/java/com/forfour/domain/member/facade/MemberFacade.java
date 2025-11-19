@@ -6,6 +6,7 @@ import com.forfour.domain.member.dto.response.MemberEnterDto;
 import com.forfour.domain.member.entity.Member;
 import com.forfour.domain.member.service.MemberGetService;
 import com.forfour.domain.member.service.MemberSaveService;
+import com.forfour.domain.participant.service.ParticipantGetService;
 import com.forfour.global.auth.context.MemberContext;
 import com.forfour.global.auth.service.KakaoService;
 import com.forfour.global.jwt.dto.JwtTokenResponseDto;
@@ -24,6 +25,7 @@ public class MemberFacade {
     private final JwtService jwtService;
     private final MemberGetService memberGetService;
     private final MemberSaveService memberSaveService;
+    private final ParticipantGetService participantGetService;
 
     public MemberEnterDto kakaoLogin(String authCode) {
         Long kakaoId = kakaoService.kakaoLogin(authCode);
@@ -37,7 +39,8 @@ public class MemberFacade {
     }
 
     public MemberDetailDto readMemberInformation() {
-        Member member = memberGetService.getMember(MemberContext.getMemberId());
+        Long memberId = MemberContext.getMemberId();
+        Member member = memberGetService.getMember(memberId);
         return MemberDetailDto.from(member);
     }
 

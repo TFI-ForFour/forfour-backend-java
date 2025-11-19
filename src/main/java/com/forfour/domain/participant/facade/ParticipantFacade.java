@@ -1,11 +1,13 @@
 package com.forfour.domain.participant.facade;
 
 import com.forfour.domain.member.entity.Member;
+import com.forfour.domain.participant.dto.response.MyParticipationDto;
 import com.forfour.domain.participant.entity.Participant;
 import com.forfour.domain.participant.service.ParticipantGetService;
 import com.forfour.domain.room.entity.RoomStatus;
 import com.forfour.domain.room.event.RoomEndEvent;
 import com.forfour.domain.room.event.RoomStartEvent;
+import com.forfour.global.auth.context.MemberContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -41,6 +43,16 @@ public class ParticipantFacade {
             Member member = participant.getMember();
             member.updateWalkData(event.distance());
         }
+    }
+
+    public MyParticipationDto checkMyParticipation() {
+        Long memberId = MemberContext.getMemberId();
+        Participant myProgressParticipation = participantGetService.findMyProgressParticipation(memberId);
+        if(myProgressParticipation == null) {
+            return MyParticipationDto.from(false, null);
+        }
+
+        return MyParticipationDto.from(true, myProgressParticipation.getRoomId());
     }
 
 }
