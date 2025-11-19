@@ -39,4 +39,9 @@ public class Member extends BaseEntity {
                 .build();
     }
 
+    public void updateWalkData(double distance) {
+        this.totalWalkCount++;
+        this.totalDistance += distance;
+    }
+
 }

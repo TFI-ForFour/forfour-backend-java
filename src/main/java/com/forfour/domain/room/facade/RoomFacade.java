@@ -9,10 +9,12 @@ import com.forfour.domain.path.entity.Path;
 import com.forfour.domain.path.service.PathGetService;
 import com.forfour.domain.room.dto.request.RoomSaveDto;
 import com.forfour.domain.room.dto.response.RoomDetailDto;
+import com.forfour.domain.room.dto.response.RoomEndDto;
 import com.forfour.domain.room.dto.response.RoomWithParticipantsDto;
 import com.forfour.domain.room.dto.response.SliceRoomDto;
 import com.forfour.domain.room.entity.Room;
 import com.forfour.domain.room.entity.RoomStatus;
+import com.forfour.domain.room.event.RoomEndEvent;
 import com.forfour.domain.room.event.RoomStartEvent;
 import com.forfour.domain.room.exception.RoomException;
 import com.forfour.domain.room.exception.RoomExceptionInformation;
@@ -106,20 +108,19 @@ public class RoomFacade {
         path.validateStartMarket(marketId);
 
         eventPublisher.publishEvent(RoomStartEvent.of(roomId, RoomStatus.PROGRESS));
-        room.updateStatus(RoomStatus.PROGRESS);
+        startRoom(room);
     }
 
     @Transactional
-    public void endWalking(Long roomId, String marketId) {
+    public RoomEndDto endWalking(Long roomId, String marketId) {
         Room room = roomGetService.getRoomUsingLock(roomId);
         Path path = pathGetService.getPath(room.getPathId());
         room.validateRoomLeader(MemberContext.getMemberId());
         path.validateEndMarket(marketId);
+        endRoom(room);
 
-        eventPublisher.publishEvent(RoomStartEvent.of(roomId, RoomStatus.COMPLETED));
-        room.endStopWatch();
-        room.updateStatus(RoomStatus.COMPLETED);
-//        Duration duration = room.getDuration();
+        eventPublisher.publishEvent(RoomEndEvent.of(room, path));
+        return RoomEndDto.of(room, path);
     }
 
     /*
@@ -140,6 +141,16 @@ public class RoomFacade {
 
     private void enterRoom(Long roomId, Member member) {
         participantSaveService.save(roomId, member);
+    }
+
+    private void startRoom(Room room) {
+        room.startStopwatch();
+        room.updateStatus(RoomStatus.PROGRESS);
+    }
+
+    private void endRoom(Room room) {
+        room.endStopWatch();
+        room.updateStatus(RoomStatus.COMPLETED);
     }
 
 }

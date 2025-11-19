@@ -2,6 +2,7 @@ package com.forfour.domain.room.controller;
 
 import com.forfour.domain.room.dto.request.RoomSaveDto;
 import com.forfour.domain.room.dto.response.RoomDetailDto;
+import com.forfour.domain.room.dto.response.RoomEndDto;
 import com.forfour.domain.room.dto.response.RoomWithParticipantsDto;
 import com.forfour.domain.room.dto.response.SliceRoomDto;
 import com.forfour.domain.room.entity.RoomStatus;
@@ -85,12 +86,12 @@ public class RoomController implements RoomSwagger{
 
     @AuthGuard({MemberGuard.class, AdminGuard.class})
     @PatchMapping("/v1/room/{roomId}/end-market/{marketId}")
-    public ApiResponse<Void> endWalking(
+    public ApiResponse<RoomEndDto> endWalking(
             @PathVariable Long roomId,
             @PathVariable String marketId
     ) {
-        facade.endWalking(roomId, marketId);
-        return ApiResponse.response(HttpStatus.OK, WALKING_END.getMeesage());
+        RoomEndDto response = facade.endWalking(roomId, marketId);
+        return ApiResponse.response(HttpStatus.OK, WALKING_END.getMeesage(), response);
     }
 
 }

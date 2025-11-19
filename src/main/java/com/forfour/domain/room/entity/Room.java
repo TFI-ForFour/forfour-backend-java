@@ -92,6 +92,10 @@ public class Room extends BaseEntity {
         return this.status == status;
     }
 
+    public void startStopwatch() {
+        this.stopwatchStartAt = LocalDateTime.now();
+    }
+
     public void endStopWatch() {
         this.stopwatchEndAt = LocalDateTime.now();
     }
