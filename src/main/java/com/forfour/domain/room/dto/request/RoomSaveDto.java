@@ -19,10 +19,6 @@ public record RoomSaveDto(
         String missionName,
 
         @NotNull
-        @Schema(description = "최대 멤버 수", example = "10")
-        Integer maxMemberCount,
-
-        @NotNull
         @Schema(description = "산책 시간")
         LocalDateTime startAt
 ) {
