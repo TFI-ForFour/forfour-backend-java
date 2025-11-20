@@ -21,6 +21,7 @@ import java.time.LocalDateTime;
 public class Room extends BaseEntity {
 
     private static final int MINIMUM_MEMBER_COUNT = 3;
+    private static final int MAX_MEMBER_COUNT = 10;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -66,7 +67,7 @@ public class Room extends BaseEntity {
                 .startMarketName(path.getStartMarketName())
                 .endMarketName(path.getEndMarketName())
                 .mission(Mission.value(dto.missionName()))
-                .maxMemberCount(dto.maxMemberCount())
+                .maxMemberCount(MAX_MEMBER_COUNT)
                 .memberCount(1)
                 .status(RoomStatus.RECRUITING)
                 .startAt(dto.startAt())
