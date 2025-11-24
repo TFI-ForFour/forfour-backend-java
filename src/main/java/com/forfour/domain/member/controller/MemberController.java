@@ -10,11 +10,13 @@ import com.forfour.global.auth.guards.AdminGuard;
 import com.forfour.global.auth.guards.MemberGuard;
 import com.forfour.global.common.response.ApiResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import static com.forfour.domain.member.controller.ResponseMessage.*;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 public class MemberController implements MemberSwagger{
@@ -25,6 +27,7 @@ public class MemberController implements MemberSwagger{
     public ApiResponse<MemberEnterDto> kakaoLogin(
             @RequestBody MemberLoginDto dto
     ) {
+        log.info("MemberController 실행");
         MemberEnterDto response = memberFacade.kakaoLogin(dto.code());
         if (response.isRegistered()) {
             return ApiResponse.response(HttpStatus.OK, MEMBER_REGISTER_SUCCESS.getMessage(), response);

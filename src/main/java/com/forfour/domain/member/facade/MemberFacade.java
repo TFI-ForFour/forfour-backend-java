@@ -14,12 +14,14 @@ import com.forfour.global.auth.service.KakaoService;
 import com.forfour.global.jwt.dto.JwtTokenResponseDto;
 import com.forfour.global.jwt.service.JwtService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class MemberFacade {
@@ -32,8 +34,10 @@ public class MemberFacade {
     private final ParticipantGetService participantGetService;
 
     public MemberEnterDto kakaoLogin(String authCode) {
+        log.info("카카오 API 호출 시작");
         Long kakaoId = kakaoService.kakaoLogin(authCode);
         Optional<Member> findMember = memberGetService.getMemberByKakaoId(kakaoId);
+        log.info("카카오 API 호출 종료");
 
         if (findMember.isEmpty()) {
             return registerNewMember(kakaoId);
