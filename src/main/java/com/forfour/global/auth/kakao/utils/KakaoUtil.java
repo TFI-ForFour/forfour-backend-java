@@ -4,6 +4,7 @@ package com.forfour.global.auth.kakao.utils;
 import com.forfour.global.auth.kakao.dto.KaKaoDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
@@ -44,6 +45,12 @@ public class KakaoUtil {
                 .body(params)
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .retrieve()
+                .onStatus(HttpStatusCode::is4xxClientError, (request, response) -> {
+                    log.error("카카오 토큰 요청 4xx 에러: {}", new String(response.getBody().readAllBytes()));
+                })
+                .onStatus(HttpStatusCode::is5xxServerError, (request, response) -> {
+                    log.error("카카오 토큰 요청 5xx 에러: {}", new String(response.getBody().readAllBytes()));
+                })
                 .body(KaKaoDTO.KakaoAccessToken.class);
     }
 
