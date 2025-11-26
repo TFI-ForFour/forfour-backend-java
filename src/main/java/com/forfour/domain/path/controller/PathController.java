@@ -30,7 +30,7 @@ public class PathController implements PathSwagger{
         return ApiResponse.response(HttpStatus.OK, PATH_CREATED.getMessage(), response);
     }
 
-    @AuthGuard(MemberGuard.class)
+    @AuthGuard({MemberGuard.class, AdminGuard.class})
     @GetMapping("/v1/path/{pathId}")
     public ApiResponse<PathDetailDto> readWalkingPath(
             @PathVariable Long pathId
@@ -39,7 +39,7 @@ public class PathController implements PathSwagger{
         return ApiResponse.response(HttpStatus.OK, SINGLE_PATH_READ.getMessage(), response);
     }
 
-    @AuthGuard(MemberGuard.class)
+    @AuthGuard({MemberGuard.class, AdminGuard.class})
     @GetMapping("/v1/path-list")
     public ApiResponse<SlicePathDto> scrollWalkingPath(
             @RequestParam int pageSize,
