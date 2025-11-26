@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Room extends BaseEntity {
 
-    private static final int MINIMUM_MEMBER_COUNT = 3;
+    private static final int MINIMUM_MEMBER_COUNT = 2;
     private static final int MAX_MEMBER_COUNT = 10;
 
     @Id
