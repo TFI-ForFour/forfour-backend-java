@@ -11,7 +11,6 @@ public record RoomSaveDto(
         @Schema(description = "산책방 제목", example = "테스트 산책방 1")
         String title,
 
-        @NotBlank
         @Schema(description = "경로 ID", example = "1")
         Long pathId,
 
