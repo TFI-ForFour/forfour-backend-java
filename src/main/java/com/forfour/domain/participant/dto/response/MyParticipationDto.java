@@ -11,7 +11,7 @@ public record MyParticipationDto(
     public static MyParticipationDto from(boolean hasActiveRoom, Room room) {
         return MyParticipationDto.builder()
                 .hasActiveRoom(hasActiveRoom)
-                .roomId(room.getId())
+                .roomId(room != null ? room.getId() : null)
                 .build();
     }
 }
