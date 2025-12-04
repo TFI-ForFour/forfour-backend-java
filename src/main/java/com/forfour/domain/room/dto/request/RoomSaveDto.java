@@ -17,6 +17,9 @@ public record RoomSaveDto(
         @Schema(description = "미션 명", example = "PLOGGING, DELIVERY, PARK, NO_MISSION")
         String missionName,
 
+        @Schema(description = "최대인원 수", example = "10")
+        Long maxMemberCount,
+
         @NotNull
         @Schema(description = "산책 시간")
         LocalDateTime startAt
