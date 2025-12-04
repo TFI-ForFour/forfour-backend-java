@@ -67,7 +67,7 @@ public class Room extends BaseEntity {
                 .startMarketName(path.getStartMarketName())
                 .endMarketName(path.getEndMarketName())
                 .mission(Mission.value(dto.missionName()))
-                .maxMemberCount(MAX_MEMBER_COUNT)
+                .maxMemberCount(dto.maxMemberCount() != null ? dto.maxMemberCount().intValue() : MAX_MEMBER_COUNT)
                 .memberCount(1)
                 .status(RoomStatus.RECRUITING)
                 .startAt(dto.startAt())
